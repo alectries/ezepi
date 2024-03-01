@@ -13,6 +13,16 @@ ezepi (short for Easy Epidemiology) is a package that helps make it
 simpler to calculate common epidemiological measures from a pre-existing
 dataset. ezepi is built using the tidyverse and fmsb.
 
+## How to Install
+
+Run the following commands in your R console to install ezepi:
+
+    install.packages("devtools")
+    devtools::install_github("alectries/ezepi")
+
+All versions are currently experimental, so you do not need to specify a
+branch or version.
+
 ## Basic Use
 
 All ezepi functions follow a basic format:
