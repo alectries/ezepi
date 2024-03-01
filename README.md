@@ -9,9 +9,20 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-ezepi (short for Easy Epidemiology) is a package that helps make it
-simpler to calculate common epidemiological measures from a pre-existing
-dataset. ezepi is built using the tidyverse and fmsb.
+ezepi (short for Easy Epidemiology) is a package that simplifies the
+calculation of common epidemiological measures of occurrence and
+association from pre-existing datasets. ezepi is built using the
+tidyverse and fmsb.
+
+## How to Install
+
+Run the following commands in your R console to install ezepi:
+
+    install.packages("devtools")
+    devtools::install_github("alectries/ezepi")
+
+All versions are currently experimental, so you do not need to specify a
+branch or version.
 
 ## How to Install
 
