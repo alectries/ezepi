@@ -32,17 +32,6 @@ devtools::install_github("alectries/ezepi")
 
 All versions are currently experimental, so you do not need to specify a branch or version.
 
-## How to Install
-
-Run the following commands in your R console to install ezepi:
-
-```
-install.packages("devtools")
-devtools::install_github("alectries/ezepi")
-```
-
-All versions are currently experimental, so you do not need to specify a branch or version.
-
 ## Basic Use
 
 All ezepi functions follow a basic format:

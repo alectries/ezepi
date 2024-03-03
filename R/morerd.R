@@ -21,6 +21,57 @@ morerd <- function(x,
                  ref_out = 0,
                  conf_lvl = 0.95
 ){
+  # startup
+  ## check that required vars exist
+  if(
+    is_empty(select({{x}}, {{exposure_var}}))
+  ){
+    stop("ezepi: Must specify exposure_var!")
+  }
+  if(
+    is_empty(select({{x}}, {{outcome_var}}))
+  ){
+    stop("ezepi: Must specify outcome_var!")
+  }
+  ## pull vars
+  test.exp <- x %>%
+    pull({{exposure_var}})
+  test.out <- x %>%
+    pull({{outcome_var}})
+  test.df <- data.frame(test.exp, test.out)
+  ## tests
+  if(
+    class(test.exp) == class({{ref_exp}})
+  ){
+    message(paste0("ezepi: Referent exposure value is ", {{ref_exp}}))
+  } else {
+    stop("ezepi: Error: referent exposure does not match variable type")
+  }
+  if(
+    test.df %>% filter(test.exp == {{ref_exp}}) %>% summarise(test.exp = n()) >= 1
+  ){
+    message("ezepi: Exposure variable set.")
+  } else {
+    stop("ezepi: Error: referent value does not exist in exposure_var")
+  }
+  if(
+    class(test.out) == class({{index_out}}) &
+    class(test.out) == class({{ref_out}})
+  ){
+    message(paste0("ezepi: Index outcome value is ", {{index_out}},
+                   " and referent outcome value is ", {{ref_out}}))
+  } else {
+    stop("ezepi: Error: index/referent outcome does not match variable type")
+  }
+  if(
+    test.df %>% filter(test.out == {{index_out}}) %>% summarise(test.out = n()) >= 1 &
+    test.df %>% filter(test.out == {{ref_out}}) %>% summarise(test.out = n()) >= 1
+  ){
+    message("ezepi: Outcome variable set.")
+  } else {
+    stop("ezepi: Error: index/referent value does not exist in outcome_var")
+  }
+
   # standardize data
   x.df <- x %>%
     mutate(exp = case_when({{exposure_var}} == {{ref_exp}} ~ 'unexposed',

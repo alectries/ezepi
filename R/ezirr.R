@@ -26,6 +26,74 @@ ezirr <- function(x,
                  ref_out = 0,
                  conf_lvl = 0.95
 ){
+  # startup
+  ## check that required vars exist
+  if(
+    is_empty(select({{x}}, {{exposure_var}}))
+  ){
+    stop("ezepi: Must specify exposure_var!")
+  }
+  if(
+    is_empty(select({{x}}, {{outcome_var}}))
+  ){
+    stop("ezepi: Must specify outcome_var!")
+  }
+  if(
+    is_empty(select({{x}}, {{person_time}}))
+  ){
+    stop("ezepi: Must specify person_time!")
+  }
+  ## pull vars
+  test.exp <- x %>%
+    pull({{exposure_var}})
+  test.out <- x %>%
+    pull({{outcome_var}})
+  test.pt <- x %>%
+    pull({{person_time}})
+  test.df <- data.frame(test.exp, test.out, test.pt)
+  ## tests
+  if(
+    class(test.exp) == class({{index_exp}}) &
+    class(test.exp) == class({{ref_exp}})
+  ){
+    message(paste0("ezepi: Index exposure value is ", {{index_exp}},
+                   " and referent exposure value is ", {{ref_exp}}))
+  } else {
+    stop("ezepi: Error: index/referent exposure does not match variable type")
+  }
+  if(
+    test.df %>% filter(test.exp == {{index_exp}}) %>% summarise(test.exp = n()) >= 1 &
+    test.df %>% filter(test.exp == {{ref_exp}}) %>% summarise(test.exp = n()) >= 1
+  ){
+    message("ezepi: Exposure variable set.")
+  } else {
+    stop("ezepi: Error: index/referent value does not exist in exposure_var")
+  }
+  if(
+    class(test.out) == class({{index_out}}) &
+    class(test.out) == class({{ref_out}})
+  ){
+    message(paste0("ezepi: Index outcome value is ", {{index_out}},
+                   " and referent outcome value is ", {{ref_out}}))
+  } else {
+    stop("ezepi: Error: index/referent outcome does not match variable type")
+  }
+  if(
+    test.df %>% filter(test.out == {{index_out}}) %>% summarise(test.out = n()) >= 1 &
+    test.df %>% filter(test.out == {{ref_out}}) %>% summarise(test.out = n()) >= 1
+  ){
+    message("ezepi: Outcome variable set.")
+  } else {
+    stop("ezepi: Error: index/referent value does not exist in outcome_var")
+  }
+  if(
+    !is.na(nth(test.pt, 1))
+  ){
+    message(paste0("ezepi: Person-time variable set."))
+  } else {
+    stop("ezepi: Error: person-time variable does not exist or is not set")
+  }
+
   # standardize data
   x.df <- x %>%
     mutate(exp = case_when({{exposure_var}} == {{index_exp}} ~ 'exposed',
@@ -81,10 +149,10 @@ ezirr <- function(x,
       "Rate Ratio", "LCI", "UCI", "p-value"
     ),
     result = c(
-      ezirr.fmsb %>% unlist() %>% unname() %>% nth(4),
-      ezirr.fmsb %>% unlist() %>% unname() %>% nth(2),
-      ezirr.fmsb %>% unlist() %>% unname() %>% nth(3),
-      ezirr.fmsb %>% unlist() %>% unname() %>% nth(1)
+      ezirr.fmsb %>% unlist() %>% unname() %>% nth(4) %>% as.numeric(),
+      ezirr.fmsb %>% unlist() %>% unname() %>% nth(2) %>% as.numeric(),
+      ezirr.fmsb %>% unlist() %>% unname() %>% nth(3) %>% as.numeric(),
+      ezirr.fmsb %>% unlist() %>% unname() %>% nth(1) %>% as.numeric()
     )
   ))
 
