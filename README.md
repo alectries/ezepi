@@ -24,6 +24,9 @@ Run the following commands in your R console to install ezepi:
 All versions are currently experimental, so you do not need to specify a
 branch or version.
 
+You can update ezepi by running `update_packages()` and selecting the
+option for ezepi.
+
 ## Basic Use
 
 All ezepi functions follow a basic format:
@@ -112,12 +115,11 @@ ezepi is currently an experimental package. This means a few things:
 
 1.  It may not work as intended in all circumstances, because testing
     has been minimal.
-2.  It will frequently spit out warnings you cannot solve by cleaning up
-    your own code.
-3.  There are no backend checks (yet) to ensure you are using ezepi
-    correctly; you may get errors from packages ezepi uses (probably
-    dplyr) or the function may appear to run correctly but yield
-    uninterpretable or otherwise useless results.
+2.  It will sometimes spit out warnings you cannot solve by cleaning up
+    your own code (on odds ratio commands in particular).
+3.  Some backend checks have been added (as of `0.0.2`) to ensure proper
+    usage. However, you may still get error messages from underlying
+    packages, such as dplyr.
 4.  ezepi is light on features because more will be added later.
 5.  It is not finished, and thus it is not up to modern standards of
     development.
@@ -129,9 +131,20 @@ should not expect a polished, complete package at this point.
 
 - **moreirr/moreird**: Like `morerr` and `morerd`, but for incidence
   rates.
-- **Native ezepi sanity checking**: The functions all work, but
-  user-proofing needs to be built in to aid proper usage.
 - **Unit tests**: To ensure long-term functionality, `testthat` will be
   used to make sure the package still works when changes are made. This
   will take considerable time to add, but ezepi will be experimental
   until it is added.
+
+### Possible future features
+
+- **GLMs**: I would like to add support for easy modeling, but this is a
+  longer-term initiative.
+- **Graphing**: Specifically boxplots for existing more functions and
+  charts for GLMs.
+
+### GitHub issues
+
+Please make use of issues to point out bugs, unexpected or unclear
+errors, or suggest new features. ezepi is being actively developed, and
+I am interested in useful improvements.
