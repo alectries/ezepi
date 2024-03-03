@@ -23,6 +23,10 @@ moretbl <- function(x,
                   ref_out = 0
 ){
   # startup
+  ## check that required packages are loaded
+  if("dplyr" %in% (.packages())){} else {
+    stop("ezepi: ezepi requires the tidyverse. Please execute library(tidyverse) or library(ezepi) before continuing.")
+  }
   ## check that required vars exist
   if(
     is_empty(select({{x}}, {{exposure_var}}))

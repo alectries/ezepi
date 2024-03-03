@@ -27,6 +27,13 @@ ezird <- function(x,
                   conf_lvl = 0.95
 ){
   # startup
+  ## check that required packages are loaded
+  if("dplyr" %in% (.packages())){} else {
+    stop("ezepi: ezepi requires the tidyverse. Please execute library(tidyverse) or library(ezepi) before continuing.")
+  }
+  if("fmsb" %in% (.packages())){} else {
+    stop("ezepi: ezepi requires fmsb. Please execute library(fmsb) or library(ezepi) before continuing.")
+  }
   ## check that required vars exist
   if(
     is_empty(select({{x}}, {{exposure_var}}))
