@@ -14,7 +14,7 @@ calculation of common epidemiological measures of occurrence and
 association from pre-existing datasets. ezepi is built using the
 tidyverse and fmsb.
 
-## How to Install
+## How to install
 
 Run the following commands in your R console to install ezepi:
 
@@ -27,7 +27,7 @@ branch or version.
 You can update ezepi by running `update_packages()` and selecting the
 option for ezepi.
 
-## Basic Use
+## Basic use
 
 All ezepi functions follow a basic format:
 
@@ -58,7 +58,7 @@ functions on a dataset before piping it into ezepi without problems.
 ezepi includes two types of functions: “ez” functions and “more”
 functions.
 
-### ez Functions
+### ez functions
 
 ez functions are used when comparing a binary outcome across a single
 exposed (or treated, or index) group and a single unexposed (or
@@ -85,7 +85,7 @@ untreated, or referent) group. Thus, ez functions require you to specify
 All ez functions generate a tibble, which can be piped into `View()` or
 tidyverse functions to extract needed data.
 
-### more Functions
+### more functions
 
 In contrast to ez functions, more functions are used to compare a binary
 outcome across multiple exposure categories. The exposure variable is
