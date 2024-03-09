@@ -1,5 +1,14 @@
 # ezepi Changelog
 
+## ezepi 0.0.3
+
+### Added
+
+#### more functions
+
+- IN PROGRESS: All more functions are now capable of stratified association measures
+- IN PROGRESS: All ratio more functions can do Mantel-Haenszel pooling
+
 ## ezepi 0.0.2
 
 ### Added

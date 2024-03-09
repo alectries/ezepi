@@ -8,10 +8,12 @@ morerr(
   x,
   exposure_var,
   outcome_var,
+  strat_var = NULL,
   ref_exp = 0,
   index_out = 1,
   ref_out = 0,
-  conf_lvl = 0.95
+  conf_lvl = 0.95,
+  mh = 0
 )
 }
 \arguments{
@@ -21,6 +23,8 @@ morerr(
 
 \item{outcome_var}{A categorical outcome variable in x.}
 
+\item{strat_var}{A categorical variable in x by which to stratify estimates.}
+
 \item{ref_exp}{The value of exposure_var to treat as the unexposed group. Defaults to 0.}
 
 \item{index_out}{The value of outcome_var to treat as cases. Defaults to 1.}
@@ -28,6 +32,8 @@ morerr(
 \item{ref_out}{The value of outcome_var to treat as non-cases. Defaults to 0.}
 
 \item{conf_lvl}{The preferred confidence level for hypothesis testing. Defaults to 0.95.}
+
+\item{mh}{Sets whether to use (Cochran-)Mantel-Haenszel pooling. 1 for yes, defaults to 0.}
 }
 \value{
 A tibble.
