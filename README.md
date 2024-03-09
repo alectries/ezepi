@@ -129,6 +129,10 @@ should not expect a polished, complete package at this point.
 
 ### Features in development
 
+- **MH estimation**: Add an option to calculate Mantel-Haenszel
+  statistics instead of crude stats.
+- **stratified associations**: Add functions (or options on existing
+  functions) allowing for stratifying by a second variable
 - **moreirr/moreird**: Like `morerr` and `morerd`, but for incidence
   rates.
 - **Unit tests**: To ensure long-term functionality, `testthat` will be

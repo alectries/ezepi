@@ -100,6 +100,8 @@ Please feel free to note issues on Github, but understand that you should not ex
 
 ### Features in development
 
+- **MH estimation**: Add an option to calculate Mantel-Haenszel statistics instead of crude stats.
+- **stratified associations**: Add functions (or options on existing functions) allowing for stratifying by a second variable
 - **moreirr/moreird**: Like `morerr` and `morerd`, but for incidence rates.
 - **Unit tests**: To ensure long-term functionality, `testthat` will be used to make sure the package still works when changes are made. This will take considerable time to add, but ezepi will be experimental until it is added.
 
