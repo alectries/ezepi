@@ -121,7 +121,8 @@ morerr <- function(x,
     hasArg(strat_var)
   ){
     x.df <- x.df %>%
-      mutate(strat = case_when(!is.na({{strat_var}}) ~ paste0('st.', {{strat_var}})))
+      mutate(strat = case_when(!is.na({{strat_var}}) ~ paste0('st.', {{strat_var}}),
+                               is.na({{strat_var}}) ~ NA))
   }
 
   # if strat is not set
@@ -191,130 +192,105 @@ morerr <- function(x,
     exp == 'unexposed' ~ 0))
   } else {
 
-    # if strat_var is set, but mh is off
+    # if strat_var is set, but mh is set to off
     if(hasArg(strat_var) & mh == 0){
 
-      # generate a table with totals
-      morerr.df <- x.df %>%
-        filter(!is.na(strat)) %>%
-        filter(!is.na(exp)) %>%
-        filter(out == 'case' | out == 'control') %>%
-        group_by(strat, exp, out) %>%
-        tally() %>%
-        spread(out, n) %>%
-        mutate(total = rowSums(across(everything()))) %>%
-        mutate(risk = case / total)
+      # make list of strata
+      strat_vals <- list(unique(select(x.df, strat)))
 
-      # calc risk ratios and CIs to add to table
-      morerr.res <- morerr.df %>%
-        # RR estimate
-        mutate(RR = as.numeric(fmsb::riskratio(
-          case,
-          morerr.df %>%
-            filter(strat == strat) %>%
-            filter(exp == 'unexposed') %>%
-            pull(case),
-          total,
-          morerr.df %>%
-            filter(strat == strat) %>%
-            filter(exp == 'unexposed') %>%
-            pull(total),
-          conf.level = conf_lvl
-        ) %>% unlist() %>% unname() %>%
-          nth(4)
-          )) %>%
-        # Lower CI for RR
-        mutate(LCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
-          case,
-          morerr.df %>%
-            filter(strat == strat) %>%
-            filter(exp == 'unexposed') %>%
-            pull(case),
-          total,
-          morerr.df %>%
-            filter(strat == strat) %>%
-            filter(exp == 'unexposed') %>%
-            pull(total),
-          conf.level = conf_lvl
-        ) %>% unlist() %>% unname() %>%
-          nth(2)
-          ),
-        exp == 'unexposed' ~ 0)) %>%
-        # Upper CI for RR
-        mutate(UCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
-          case,
-          morerr.df %>%
-            filter(strat == strat) %>%
-            filter(exp == 'unexposed') %>%
-            pull(case),
-          total,
-          morerr.df %>%
-            filter(strat == strat) %>%
-            filter(exp == 'unexposed') %>%
-            pull(total),
-          conf.level = conf_lvl
-        ) %>% unlist() %>% unname() %>%
-          nth(3)
-          ),
-        exp == 'unexposed' ~ 0))
-    } else {
+      # set repeat counter
+      repi <- length(strat_vals)
 
-      # if strat_var is set and mh is on
-      if(hasArg(strat_var) & mh == 1){
+      # make a tibble
+      strat_vals.df <- tibble(st = unique(select(x.df, strat))) %>%
+        mutate(obs = row_number(st))
 
-        # get number of rows
-        length <- length(select({{x}}, {{strat_var}}))
-        counter <- length
+      # create results df
+      morerr.res <- tibble(strat = as.character(c()),
+                           exp = as.character(c()),
+                           case = as.numeric(c()),
+                           control = as.numeric(c()),
+                           total = as.numeric(c()),
+                           risk = as.numeric(c()),
+                           RR = as.numeric(c()),
+                           LCI = as.numeric(c()),
+                           UCI = as.numeric(c()))
+
+
+      # calculate by stratum
+      repeat {
+        if(repi == 0){break}
 
         # generate a table with totals
         morerr.df <- x.df %>%
-          filter(!is.na(strat)) %>%
+          filter(strat == pull(filter(strat_vals.df, obs == repi), st)) %>%
           filter(!is.na(exp)) %>%
           filter(out == 'case' | out == 'control') %>%
-          group_by(strat, exp, out) %>%
+          group_by(exp, out) %>%
           tally() %>%
           spread(out, n) %>%
           mutate(total = rowSums(across(everything()))) %>%
           mutate(risk = case / total)
 
         # calc risk ratios and CIs to add to table
-        morerr.res <- morerr.df %>%
-          mutate(RRMH = as.numeric(fmsb::RRMH(matrix(
-            data = c(paste0(
-              repeat{
-                # decrease counter by one
-                counter <- counter - 1
+        morerr.df %>%
+          # RR estimate
+          mutate(RR = as.numeric(fmsb::riskratio(
+            case,
+            morerr.df %>%
+              filter(exp == 'unexposed') %>%
+              pull(case),
+            total,
+            morerr.df %>%
+              filter(exp == 'unexposed') %>%
+              pull(total),
+            conf.level = conf_lvl
+          ) %>% unlist() %>% unname() %>%
+            data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
+                                'method', 'data.name'), value = .) %>%
+            filter(name == 'estimate') %>%
+            pull(value))) %>%
+          # Lower CI for RR
+          mutate(LCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
+            case,
+            morerr.df %>%
+              filter(exp == 'unexposed') %>%
+              pull(case),
+            total,
+            morerr.df %>%
+              filter(exp == 'unexposed') %>%
+              pull(total),
+            conf.level = conf_lvl
+          ) %>% unlist() %>% unname() %>%
+            data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
+                                'method', 'data.name'), value = .) %>%
+            filter(name == 'conf.int1') %>%
+            pull(value)),
+          exp == 'unexposed' ~ 0)) %>%
+          # Upper CI for RR
+          mutate(UCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
+            case,
+            morerr.df %>%
+              filter(exp == 'unexposed') %>%
+              pull(case),
+            total,
+            morerr.df %>%
+              filter(exp == 'unexposed') %>%
+              pull(total),
+            conf.level = conf_lvl
+          ) %>% unlist() %>% unname() %>%
+            data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
+                                'method', 'data.name'), value = .) %>%
+            filter(name == 'conf.int2') %>%
+            pull(value)),
+          exp == 'unexposed' ~ 0)) %>%
+          bind_rows(morerr.res, .) -> morerr.res
 
-                # set values
-                col1 <- case
-                col2 <- morerr.df %>%
-                  filter(strat == strat) %>%
-                  filter(exp == 'unexposed') %>%
-                  select(case) %>%
-                  pull()
-                col3 <- total
-                col4 <- morerr.df %>%
-                  filter(strat == strat) %>%
-                  filter(exp == 'unexposed') %>%
-                  select(total) %>%
-                  pull()
-
-                # collect and output values
-                if(counter != 0){
-                  paste0(col1, ", ", col2, ", ", col3, ", ", col4, ", ") %>%
-                    invisible()
-                } else {
-                  paste0(col1, ", ", col2, ", ", col3, ", ", col4) %>%
-                    invisible()
-                  break
-                }
-              })),
-            nrow = length,
-            ncol = 4
-          ),
-          conf.level = conf_lvl)
-          ))
+        repi <- repi - 1
       }
+
+    }else{
+      # mh here
     }
   }
 
