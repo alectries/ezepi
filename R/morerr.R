@@ -7,23 +7,19 @@
 #' @param x A dataset.
 #' @param exposure_var A categorical exposure variable in x.
 #' @param outcome_var A categorical outcome variable in x.
-#' @param strat_var A categorical variable in x by which to stratify estimates.
 #' @param ref_exp The value of exposure_var to treat as the unexposed group. Defaults to 0.
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
-#' @param mh Sets whether to use (Cochran-)Mantel-Haenszel pooling. 1 for yes, defaults to 0.
 #' @return A tibble.
 #' @export
 morerr <- function(x,
                    exposure_var,
                    outcome_var,
-                   strat_var = NULL,
                    ref_exp = 0,
                    index_out = 1,
                    ref_out = 0,
-                   conf_lvl = 0.95,
-                   mh = 0
+                   conf_lvl = 0.95
 ){
   # startup
   ## check that required packages are loaded
@@ -43,15 +39,6 @@ morerr <- function(x,
     is_empty(select({{x}}, {{outcome_var}}))
   ){
     stop("ezepi: Must specify outcome_var!")
-  }
-  if(
-    hasArg(strat_var)
-  ){
-    if(is_empty(select({{x}}, {{strat_var}}))){
-      stop("ezepi: strat_var must exist in dataset!")
-    } else {
-      message("ezepi: Stratification variable set.")
-    }
   }
 
   ## pull vars
@@ -92,19 +79,6 @@ morerr <- function(x,
   } else {
     stop("ezepi: Error: index/referent value does not exist in outcome_var")
   }
-  if(
-    mh == 1
-  ){
-    if(hasArg(strat_var)){
-      message("ezepi: Using MH pooling.")
-    } else {
-      stop("ezepi: Error: must set strat_var to use MH")
-    }
-  } else {
-    if(mh != 0){
-      stop("ezepi: Error: mh must be set to 0 or 1")
-    }
-  }
 
   # standardize data
   x.df <- x %>%
@@ -115,18 +89,6 @@ morerr <- function(x,
     mutate(out = case_when({{outcome_var}} == {{index_out}} ~ 'case',
                            {{outcome_var}} == {{ref_out}} ~ 'control',
                            .default = NA))
-
-  # add stratification variable if necessary
-  if(
-    hasArg(strat_var)
-  ){
-    x.df <- x.df %>%
-      mutate(strat = case_when(!is.na({{strat_var}}) ~ paste0('st.', {{strat_var}}),
-                               is.na({{strat_var}}) ~ NA))
-  }
-
-  # if strat is not set
-  if(!hasArg(strat_var)){
 
   # generate a table with totals
   morerr.df <- x.df %>%
@@ -190,110 +152,6 @@ morerr <- function(x,
       filter(name == 'conf.int2') %>%
       pull(value)),
     exp == 'unexposed' ~ 0))
-  } else {
-
-    # if strat_var is set, but mh is set to off
-    if(hasArg(strat_var) & mh == 0){
-
-      # make list of strata
-      strat_vals <- list(unique(select(x.df, strat)))
-
-      # set repeat counter
-      repi <- length(strat_vals)
-
-      # make a tibble
-      strat_vals.df <- tibble(st = unique(select(x.df, strat))) %>%
-        mutate(obs = row_number(st))
-
-      # create results df
-      morerr.res <- tibble(strat = as.character(c()),
-                           exp = as.character(c()),
-                           case = as.numeric(c()),
-                           control = as.numeric(c()),
-                           total = as.numeric(c()),
-                           risk = as.numeric(c()),
-                           RR = as.numeric(c()),
-                           LCI = as.numeric(c()),
-                           UCI = as.numeric(c()))
-
-
-      # calculate by stratum
-      repeat {
-        if(repi == 0){break}
-
-        # generate a table with totals
-        morerr.df <- x.df %>%
-          filter(strat == pull(filter(strat_vals.df, obs == repi), st)) %>%
-          filter(!is.na(exp)) %>%
-          filter(out == 'case' | out == 'control') %>%
-          group_by(exp, out) %>%
-          tally() %>%
-          spread(out, n) %>%
-          mutate(total = rowSums(across(everything()))) %>%
-          mutate(risk = case / total)
-
-        # calc risk ratios and CIs to add to table
-        morerr.df %>%
-          # RR estimate
-          mutate(RR = as.numeric(fmsb::riskratio(
-            case,
-            morerr.df %>%
-              filter(exp == 'unexposed') %>%
-              pull(case),
-            total,
-            morerr.df %>%
-              filter(exp == 'unexposed') %>%
-              pull(total),
-            conf.level = conf_lvl
-          ) %>% unlist() %>% unname() %>%
-            data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
-                                'method', 'data.name'), value = .) %>%
-            filter(name == 'estimate') %>%
-            pull(value))) %>%
-          # Lower CI for RR
-          mutate(LCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
-            case,
-            morerr.df %>%
-              filter(exp == 'unexposed') %>%
-              pull(case),
-            total,
-            morerr.df %>%
-              filter(exp == 'unexposed') %>%
-              pull(total),
-            conf.level = conf_lvl
-          ) %>% unlist() %>% unname() %>%
-            data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
-                                'method', 'data.name'), value = .) %>%
-            filter(name == 'conf.int1') %>%
-            pull(value)),
-          exp == 'unexposed' ~ 0)) %>%
-          # Upper CI for RR
-          mutate(UCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
-            case,
-            morerr.df %>%
-              filter(exp == 'unexposed') %>%
-              pull(case),
-            total,
-            morerr.df %>%
-              filter(exp == 'unexposed') %>%
-              pull(total),
-            conf.level = conf_lvl
-          ) %>% unlist() %>% unname() %>%
-            data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
-                                'method', 'data.name'), value = .) %>%
-            filter(name == 'conf.int2') %>%
-            pull(value)),
-          exp == 'unexposed' ~ 0)) %>%
-          bind_rows(morerr.res, .) -> morerr.res
-
-        repi <- repi - 1
-      }
-
-    }else{
-      # mh here
-    }
-  }
-
 
   return(morerr.res)
 }
