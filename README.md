@@ -104,10 +104,23 @@ will be considered treatment groups. more functions include:
 4.  **moreior**: Generates a table with counts, totals, risks, incidence
     odds ratios, and a CI for each exposed group compared with the
     unexposed group.
+5.  **moreprev**: Generates a table with counts and prevalence for each
+    outcome group.
 
 Currently, there is no more function for incidence rate association
 measures. This is due to some perplexing issues with fmsb that are still
 being sorted out.
+
+### Miscellaneous functions
+
+These functions are useful for general data management.
+
+1.  **ezt**: Transposes (flips the rows and columns of) a dataframe.
+    Similar in function to `t`, except it can retain headers more
+    easily.
+2.  **mutate_rows**: A wrapper for `dplyr::mutate` that allows you to
+    generate row data based on existing rows. It uses `mutate` under the
+    hood, so the arguments are the same.
 
 ## Experimental status
 
@@ -129,16 +142,7 @@ should not expect a polished, complete package at this point.
 
 ### Features in development
 
-- **MH estimation**: Add an option to calculate Mantel-Haenszel
-  statistics instead of crude stats.
-- **stratified associations**: Add functions (or options on existing
-  functions) allowing for stratifying by a second variable
-- **moreirr/moreird**: Like `morerr` and `morerd`, but for incidence
-  rates.
-- **Unit tests**: To ensure long-term functionality, `testthat` will be
-  used to make sure the package still works when changes are made. This
-  will take considerable time to add, but ezepi will be experimental
-  until it is added.
+- Coming soon!
 
 ### Possible future features
 
