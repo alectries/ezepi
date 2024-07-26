@@ -6,10 +6,11 @@
 
 #### Functions
 - `moreprev`, which is like `ezprev` but allows for categorical, not just binary, variables.
-- `moreird` and `moreirr`, which provide categorical exposure support for incidence rate measures of association.
+- `ezt`, which transposes a dataframe and (unlike `t`) can preserve headers.
+- `mutate_rows`, like `mutate` from `dplyr`, generates row values based on other rows.
 
 #### Unit testing
-- IN PROGRESS: Tests have been added to verify that the code is working properly before the package is installed on your device. This will not impact usage.
+- IN PROGRESS: Tests are being added to verify that the code is working properly before the package is installed on your device. This will not impact usage.
 
 ## ezepi 0.0.2
 
