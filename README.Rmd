@@ -83,8 +83,16 @@ In contrast to ez functions, more functions are used to compare a binary outcome
 2. **morerd**: Generates a table with counts, totals, risks, risk differences, and a CI for each exposed group compared with the unexposed group.
 3. **morerr**: Generates a table with counts, totals, risks, risk ratios, and a CI for each exposed group compared with the unexposed group.
 4. **moreior**: Generates a table with counts, totals, risks, incidence odds ratios, and a CI for each exposed group compared with the unexposed group.
+5. **moreprev**: Generates a table with counts and prevalence for each outcome group.
 
 Currently, there is no more function for incidence rate association measures. This is due to some perplexing issues with fmsb that are still being sorted out.
+
+### Miscellaneous functions
+
+These functions are useful for general data management.
+
+1. **ezt**: Transposes (flips the rows and columns of) a dataframe. Similar in function to `t`, except it can retain headers more easily.
+2. **mutate_rows**: A wrapper for `dplyr::mutate` that allows you to generate row data based on existing rows. It uses `mutate` under the hood, so the arguments are the same.
 
 ## Experimental status
 
@@ -100,8 +108,7 @@ Please feel free to note issues on Github, but understand that you should not ex
 
 ### Features in development
 
-- **MH estimation**: Add an option to calculate Mantel-Haenszel statistics instead of crude stats.
-- **stratified associations**: Add functions (or options on existing functions) allowing for stratifying by a second variable
+- Coming soon!
 
 ### Possible future features
 
