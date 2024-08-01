@@ -8,10 +8,15 @@
 #'
 #' @param x A dataset.
 #' @param ... Name-value pairs and other arguments. See \code{\link[dplyr]{mutate}}.
+#' @param .numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
 #' @export
 
-mutate_rows <- function(x, ...){
+mutate_rows <- function(
+    x,
+    ...,
+    .numeric_data = FALSE
+  ){
   # setup
   ## check that required packages are loaded
   if("dplyr" %in% (.packages())){} else {
@@ -32,8 +37,8 @@ mutate_rows <- function(x, ...){
 
   # add rows
   x %>%
-    ezt(row_name = "temp_headers") %>%
+    ezt(row_name = "temp_headers", numeric_data = {{.numeric_data}}) %>%
     mutate(...) %>%
-    ezt(row_name = orig_name) %>%
+    ezt(row_name = orig_name, numeric_data = {{.numeric_data}}) %>%
     return()
 }

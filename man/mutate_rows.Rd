@@ -4,12 +4,14 @@
 \alias{mutate_rows}
 \title{mutate_rows: Create, modify, and delete rows}
 \usage{
-mutate_rows(x, ...)
+mutate_rows(x, ..., .numeric_data = FALSE)
 }
 \arguments{
 \item{x}{A dataset.}
 
 \item{...}{Name-value pairs and other arguments. See \code{\link[dplyr]{mutate}}.}
+
+\item{.numeric_data}{Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.}
 }
 \value{
 A tibble.

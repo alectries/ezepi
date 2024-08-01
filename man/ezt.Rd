@@ -4,12 +4,14 @@
 \alias{ezt}
 \title{ezt: Transpose a dataset}
 \usage{
-ezt(x, row_name = NULL)
+ezt(x, row_name = NULL, numeric_data = FALSE)
 }
 \arguments{
 \item{x}{A dataset.}
 
 \item{row_name}{A string, which will be the name of the left-most column. Defaults to NULL, which will exclude the existing dataset's headers from the new dataset.}
+
+\item{numeric_data}{Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.}
 }
 \value{
 A tibble.

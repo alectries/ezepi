@@ -11,7 +11,7 @@ Description: Provides minimalistic commands for the quick application of fmsb fu
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends: tidyverse, fmsb
 Suggests: 
     testthat (>= 3.0.0)

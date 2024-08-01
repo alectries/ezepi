@@ -6,12 +6,14 @@
 #'
 #' @param x A dataset.
 #' @param row_name A string, which will be the name of the left-most column. Defaults to NULL, which will exclude the existing dataset's headers from the new dataset.
+#' @param numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
 #' @export
 
 ezt <- function(
     x,
-    row_name = NULL
+    row_name = NULL,
+    numeric_data = FALSE
 ){
   # setup
   ## check that required packages are loaded
@@ -71,18 +73,29 @@ ezt <- function(
 
   ## if row_name is specified, create names column
   if(
-    is.null(row_name)
+    !is.null(row_name)
     ){
-      return(x.df)
-    } else {
       x.df <- x.df %>%
         setNames(slice(x.df, 1)) %>%
-        slice(-1) %>%
-        mutate(across(everything(), as.numeric)) %>%
+        slice(-1)
+
+      ## if numeric_data is true, coerce
+      if(numeric_data == TRUE){
+      x.df <- x.df %>%
+        mutate(across(everything(), as.numeric))
+      }
+
+      x.df <- x.df %>%
         add_column(
           {{row_name}} := names(x)[-1],
           .before = 1
         )
-      return(x.df)
-    }
+  } else if(
+    numeric_data == TRUE
+  ){
+    x.df <- x.df %>%
+      mutate(across(everything(), as.numeric))
+  }
+
+  return(x.df)
 }
