@@ -1,5 +1,11 @@
 # ezepi Changelog
 
+## ezepi 0.0.4
+
+### Changed
+
+- Fixed `ezt()` and `mutate_rows()` to allow non-numeric data.
+
 ## ezepi 0.0.3
 
 ### Added
