@@ -11,6 +11,13 @@
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @return A tibble.
+#' @import dplyr
+#' @import fmsb
+#' @import magrittr
+#' @import rlang
+#' @import tibble
+#' @import tidyr
+#' @import tidyselect
 #' @export
 eztbl <- function(x,
                   exposure_var,

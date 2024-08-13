@@ -10,6 +10,13 @@
 #' @param ... Name-value pairs and other arguments. See \code{\link[dplyr]{mutate}}.
 #' @param .numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
+#' @import dplyr
+#' @import fmsb
+#' @import magrittr
+#' @import rlang
+#' @import tibble
+#' @import tidyr
+#' @import tidyselect
 #' @export
 
 mutate_rows <- function(

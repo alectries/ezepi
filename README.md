@@ -21,15 +21,15 @@ Run the following commands in your R console to install ezepi:
     install.packages("devtools")
     devtools::install_github("alectries/ezepi")
 
-All versions are currently experimental, so you do not need to specify a
-branch or version.
+You do not need to specify a branch or version. Releases will only
+be pushed when features are stable.
 
 You can update ezepi by running `update_packages()` and selecting the
 option for ezepi.
 
 ## Basic use
 
-All ezepi functions follow a basic format:
+Most ezepi functions follow a basic format:
 
     ezepi_function(
       x,              # the dataset to analyze
@@ -49,6 +49,10 @@ function calculates a rate, rate difference, or rate ratio.
 Additionally, many arguments have default values and do not need to be
 specified every time: `ref_exp` defaults to 0, and only needs to be set
 if the referent exposure value is not 0.
+
+Some functions, such as `ezt()`, are performing data manipulation
+instead of calculations, so the arguments are different. You can always
+check a help page using `?function`.
 
 ezepi is written to support piping. You can perform data management
 functions on a dataset before piping it into ezepi without problems.
@@ -82,7 +86,7 @@ untreated, or referent) group. Thus, ez functions require you to specify
 8.  **ezirr**: Generates a table with an estimate, CI, and p-value for
     an indicence rate ratio.
 
-All ez functions generate a tibble, which can be piped into `View()` or
+ez functions generate a tibble, which can be piped into `View()` or
 tidyverse functions to extract needed data.
 
 ### more functions
@@ -122,27 +126,9 @@ These functions are useful for general data management.
     generate row data based on existing rows. It uses `mutate` under the
     hood, so the arguments are the same.
 
-## Experimental status
-
-ezepi is currently an experimental package. This means a few things:
-
-1.  It may not work as intended in all circumstances, because testing
-    has been minimal.
-2.  It will sometimes spit out warnings you cannot solve by cleaning up
-    your own code (on odds ratio commands in particular).
-3.  Some backend checks have been added (as of `0.0.2`) to ensure proper
-    usage. However, you may still get error messages from underlying
-    packages, such as dplyr.
-4.  ezepi is light on features because more will be added later.
-5.  It is not finished, and thus it is not up to modern standards of
-    development.
-
-Please feel free to note issues on Github, but understand that you
-should not expect a polished, complete package at this point.
-
 ### Features in development
 
-- Coming soon!
+- None currently. I am focused on cleanup.
 
 ### Possible future features
 

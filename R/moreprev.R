@@ -6,6 +6,13 @@
 #' @param x A dataset.
 #' @param outcome_var A categorical outcome variable in x.
 #' @return A tibble.
+#' @import dplyr
+#' @import fmsb
+#' @import magrittr
+#' @import rlang
+#' @import tibble
+#' @import tidyr
+#' @import tidyselect
 #' @export
 moreprev <- function(x,
                      outcome_var
@@ -37,14 +44,12 @@ moreprev <- function(x,
     group_by(out) %>%
     tally() %>%
     spread(out, n) %>%
-    mutate(total = rowSums(across(everything()), na.rm = TRUE)) %>%
-    mutate(across(everything(), ~ . / total,
-                  .names = "{col}_prev"),
-           total_prev = NULL) %>%
-    select(., c(
-      sort(names(.)[!(names(.) %in% "total")]),
-      total
-    ))
+    add_column(out = c("count"), .before = 1) %>%
+    ezt("out", numeric_data = TRUE) %>%
+    mutate("total" = sum(count)) %>%
+    mutate("prevalence" = count / total) %>%
+    mutate_rows(total = rowSums(across(where(is.numeric))), .numeric_data = TRUE) %>%
+    select(!total)
 
   # output
   return(moreprev.df)

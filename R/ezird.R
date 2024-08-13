@@ -15,6 +15,13 @@
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
+#' @import dplyr
+#' @import fmsb
+#' @import magrittr
+#' @import rlang
+#' @import tibble
+#' @import tidyr
+#' @import tidyselect
 #' @export
 ezird <- function(x,
                   exposure_var,

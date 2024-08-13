@@ -14,6 +14,13 @@
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
+#' @import dplyr
+#' @import fmsb
+#' @import magrittr
+#' @import rlang
+#' @import tibble
+#' @import tidyr
+#' @import tidyselect
 #' @export
 ezior <- function(x,
                  exposure_var,
@@ -31,6 +38,12 @@ ezior <- function(x,
   }
   if("fmsb" %in% (.packages())){} else {
     stop("ezepi: ezepi requires fmsb. Please execute library(fmsb) or library(ezepi) before continuing.")
+  }
+  ## check that required vars exist
+  if(
+    is_empty({{x}})
+  ){
+    stop("ezepi: Must specify a dataset!")
   }
   ## check that required vars exist
   if(

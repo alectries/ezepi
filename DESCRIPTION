@@ -7,12 +7,19 @@ Authors@R: person(given = "Alec",
                   role = c("aut", "cre", "cph"),
                   email = "alecchiggins@icloud.com")
 Maintainer: Alec Higgins <alecchiggins@icloud.com>
-Description: Provides minimalistic commands for the quick application of fmsb functions to existing datasets. Based on tidyverse and fmsb.
+Description: Provides functions to quickly perform common calculations and data management tasks on line list epidemiological data.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
-Depends: tidyverse, fmsb
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    dplyr,
+    fmsb,
+    magrittr,
+    rlang,
+    tibble,
+    tidyr,
+    tidyselect

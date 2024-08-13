@@ -1,5 +1,18 @@
 # ezepi Changelog
 
+## ezepi 1.0.0
+
+This is the first release version of ezepi. Tests are now passing, and the package is considered stable. New releases will be feature releases.
+
+### Added
+
+- Finished adding tests to ezepi.
+
+### Changed
+
+- Updated depends to replace tidyverse, which is a meta-package, with the individual packages actually used by ezepi.
+- Changed moreprev to output a nicer and more useful table.
+
 ## ezepi 0.0.4
 
 ### Changed
