@@ -21,15 +21,15 @@ Run the following commands in your R console to install ezepi:
     install.packages("devtools")
     devtools::install_github("alectries/ezepi")
 
-You do not need to specify a branch or version. Releases will only
-be pushed when features are stable.
+All versions are currently experimental, so you do not need to specify a
+branch or version.
 
 You can update ezepi by running `update_packages()` and selecting the
 option for ezepi.
 
 ## Basic use
 
-Most ezepi functions follow a basic format:
+All ezepi functions follow a basic format:
 
     ezepi_function(
       x,              # the dataset to analyze
@@ -50,16 +50,12 @@ Additionally, many arguments have default values and do not need to be
 specified every time: `ref_exp` defaults to 0, and only needs to be set
 if the referent exposure value is not 0.
 
-Some functions, such as `ezt()`, are performing data manipulation
-instead of calculations, so the arguments are different. You can always
-check a help page using `?function`.
-
 ezepi is written to support piping. You can perform data management
 functions on a dataset before piping it into ezepi without problems.
 
 ## Functions
 
-ezepi includes two types of functions: “ez” functions and “more”
+ezepi includes two main types of functions: “ez” functions and “more”
 functions.
 
 ### ez functions
@@ -86,7 +82,7 @@ untreated, or referent) group. Thus, ez functions require you to specify
 8.  **ezirr**: Generates a table with an estimate, CI, and p-value for
     an indicence rate ratio.
 
-ez functions generate a tibble, which can be piped into `View()` or
+Most ez functions generate a tibble, which can be piped into `View()` or
 tidyverse functions to extract needed data.
 
 ### more functions
@@ -128,10 +124,18 @@ These functions are useful for general data management.
 
 ### Features in development
 
-- None currently. I am focused on cleanup.
+- **Cleanup/reorganization:** The current priority is to reorganize the
+  source code to make use of subfunctions that are easier to tweak and
+  upgrade. Some savvy users may recognize this as good coding practice,
+  but I am young and naïve, so I’m just now figuring that out.
+- **Better errors:** Once the source is reorganized, I’ll update error
+  messages to use rlang (i.e. `abort()`) instead of base R
+  (i.e. `stop()`) to report errors.
 
 ### Possible future features
 
+- **Naming:** Set names of exposure and outcome variables to be output
+  into a table.
 - **GLMs**: I would like to add support for easy modeling, but this is a
   longer-term initiative.
 - **Graphing**: Specifically boxplots for existing more functions and
