@@ -174,4 +174,33 @@
     }
   }
 
+  # Check row_name and data grouping (for ezt)
+  if("row_name" %in% args){
+    if(
+      !is.null(row_name)
+      ){
+        if(!is.character(row_name)){
+          rlang::abort(
+            message = c(
+              cli::style_bold("If defined, row_name must be a string"),
+              "i" = "Did you use a symbol for row_name?"
+            )
+          )
+        }
+      }
+    if(
+      dplyr::is_grouped_df({{x}}) == TRUE
+    ){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Dataset cannot be grouped!"),
+          "i" = "Did you ungroup() after tallying?"
+        )
+      )
+    }
+  }
+
+  # Success
+  return()
+
 }
