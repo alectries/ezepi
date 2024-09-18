@@ -23,32 +23,10 @@ ezt <- function(
     numeric_data = FALSE
 ){
   # setup
-  ## check that required packages are loaded
-  if("dplyr" %in% (.packages())){} else {
-    stop("ezepi: ezepi requires the tidyverse. Please execute library(tidyverse) or library(ezepi) before continuing.")
-  }
-  if("fmsb" %in% (.packages())){} else {
-    stop("ezepi: ezepi requires fmsb. Please execute library(fmsb) or library(ezepi) before continuing.")
-  }
-  ## check that required vars exist
-  if(
-    is_empty({{x}})
-  ){
-    stop("ezepi: Must specify a dataset!")
-  }
-  if(
-    !is.null(row_name)
-  ){
-    if(!is.character({{row_name}})){
-      stop("ezepi: If not null, row_name must be a string.")
-    }
-  }
-  ## check if data is grouped
-  if(
-    is_grouped_df({{x}}) == TRUE
-  ){
-    stop("ezepi: Dataset cannot be grouped!")
-  }
+  ezepi:::.startup(args = c("x", "row_name", "numeric_data"),
+           env = as.environment(list(x = x,
+                                     row_name = row_name,
+                                     numeric_data = numeric_data)))
 
   # transposing
   ## set counter variable

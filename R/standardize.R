@@ -5,7 +5,7 @@
                                          c("exposure_var", "ref_exp") %in% args &
                                            {{exposure_var}} == {{ref_exp}} ~ 'unexposed',
                                          c("exposure_var", "ref_exp") %in% args &
-                                           "index_exp" !%in% args &
+                                           !("index_exp" %in% args) &
                                            !is.na({{exposure_var}}) &
                                            {{exposure_var}} != {{ref_exp}} ~ paste0('exp.', {{exposure_var}}),
                                          .default = NA),
