@@ -23,10 +23,14 @@ ezt <- function(
     numeric_data = FALSE
 ){
   # setup
-  ezepi:::.startup(args = c("x", "row_name", "numeric_data"),
-           env = as.environment(list(x = x,
-                                     row_name = row_name,
-                                     numeric_data = numeric_data)))
+  args_env <- new.env()
+  args_env$x <- x
+  args_env$row_name <- row_name
+  args_env$numeric_data <- numeric_data
+  local(
+    substitute(ezepi:::.startup(args = c("x", "row_name", "numeric_data"))),
+    env = args_env
+  )
 
   # transposing
   ## set counter variable
