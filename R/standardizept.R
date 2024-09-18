@@ -1,3 +1,7 @@
+#' Internal function to standardize person-time
+#'
+#' @keywords internal
+
 .standardizept <- function(){
   # generate person-time table
   pt.df <- x.df %>%

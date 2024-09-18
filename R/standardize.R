@@ -1,3 +1,9 @@
+#' Internal function to standardize exposures and outcomes
+#'
+#' @param args A character vector of argument names to check
+#'
+#' @keywords internal
+
 .standardize <- function(args){
   x.df <- x %>%
     dplyr::mutate(exp = dplyr::case_when(c("exposure_var", "index_exp") %in% args &
@@ -14,4 +20,5 @@
                                          c("outcome_var", "ref_out") %in% args &
                                            {{outcome_var}} == {{ref_out}} ~ 'control',
                                          .default = NA))
+  return(x.df)
 }
