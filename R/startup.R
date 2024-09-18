@@ -6,9 +6,20 @@
 
 .startup <- function(args) {
 
+  # Set the environment
+  purrr::map(
+    args,
+    function(item){
+      assign(as.symbol(item), get(as.symbol(item)))
+    }
+  )
+
+  # Function to output
+  function(args){
+
     # Check for dataset
-    if ("x" %in% args) {
-      if (rlang::is_empty(x)) {
+    if("x" %in% args){
+      if(rlang::is_empty(x)){
         rlang::abort(
           message = c(
             cli::style_bold("Must specify a dataset!"),
@@ -21,8 +32,8 @@
     }
 
     # Check for exposure_var
-    if ("exposure_var" %in% args) {
-      if (rlang::is_empty(dplyr::select(x, exposure_var))) {
+    if("exposure_var" %in% args){
+      if(rlang::is_empty(dplyr::select(x, exposure_var))){
         rlang::abort(
           message = c(
             cli::style_bold("Must specify exposure_var!"),
@@ -37,8 +48,8 @@
     }
 
     # Check for outcome_var
-    if ("outcome_var" %in% args) {
-      if (rlang::is_empty(dplyr::select(x, outcome_var))) {
+    if("outcome_var" %in% args){
+      if(rlang::is_empty(dplyr::select(x, outcome_var))){
         rlang::abort(
           message = c(
             cli::style_bold("Must specify outcome_var!"),
@@ -53,8 +64,8 @@
     }
 
     # Check for person_time
-    if ("person_time" %in% args) {
-      if (rlang::is_empty(dplyr::select(x, person_time))) {
+    if("person_time" %in% args){
+      if(rlang::is_empty(dplyr::select(x, person_time))){
         rlang::abort(
           message = c(
             cli::style_bold("Must specify person_time!"),
@@ -69,8 +80,8 @@
     }
 
     # Check index_exp
-    if ("index_exp" %in% args) {
-      if (class(test.exp) == class(index_exp) & class(test.exp) == class(ref_exp)) {
+    if("index_exp" %in% args){
+      if(class(test.exp) == class(index_exp) & class(test.exp) == class(ref_exp)){
         message(paste0("ezepi: Index exposure value is ", index_exp))
       } else {
         rlang::abort(
@@ -80,7 +91,7 @@
           )
         )
       }
-      if (test.df %>% dplyr::filter(test.exp == index_exp) %>% dplyr::summarise(test.exp = dplyr::n()) >= 1) {
+      if(test.df %>% dplyr::filter(test.exp == index_exp) %>% dplyr::summarise(test.exp = dplyr::n()) >= 1){
       } else {
         rlang::abort(
           message = c(
@@ -92,7 +103,7 @@
     }
 
     # Check ref_exp
-    if ("ref_exp" %in% args) {
+    if("ref_exp" %in% args){
       if (class(test.exp) == class(ref_exp)) {
         message(paste0("ezepi: Referent exposure value is ", ref_exp))
       } else {
@@ -103,7 +114,7 @@
           )
         )
       }
-      if (test.df %>% dplyr::filter(test.exp == ref_exp) %>% dplyr::summarise(test.exp = dplyr::n()) >= 1) {
+      if(test.df %>% dplyr::filter(test.exp == ref_exp) %>% dplyr::summarise(test.exp = dplyr::n()) >= 1){
       } else {
         rlang::abort(
           message = c(
@@ -115,8 +126,8 @@
     }
 
     # Check index_out
-    if ("index_out" %in% args) {
-      if (class(test.out) == class(index_out)) {
+    if("index_out" %in% args){
+      if(class(test.out) == class(index_out)){
         message(paste0("Index outcome value is ", index_out))
       } else {
         rlang::abort(
@@ -126,7 +137,7 @@
           )
         )
       }
-      if (test.df %>% dplyr::filter(test.out == index_out) %>% dplyr::summarise(test.out = dplyr::n()) >= 1) {
+      if(test.df %>% dplyr::filter(test.out == index_out) %>% dplyr::summarise(test.out = dplyr::n()) >= 1){
       } else {
         rlang::abort(
           message = c(
@@ -138,8 +149,8 @@
     }
 
     # Check ref_out
-    if ("ref_out" %in% args) {
-      if (class(test.out) == class(ref_out)) {
+    if("ref_out" %in% args){
+      if(class(test.out) == class(ref_out)){
         message(paste0("Referent outcome value is ", ref_out))
       } else {
         rlang::abort(
@@ -149,7 +160,7 @@
           )
         )
       }
-      if (test.df %>% dplyr::filter(test.out == ref_out) %>% dplyr::summarise(test.out = dplyr::n()) >= 1) {
+      if(test.df %>% dplyr::filter(test.out == ref_out) %>% dplyr::summarise(test.out = dplyr::n()) >= 1){
       } else {
         rlang::abort(
           message = c(
@@ -161,9 +172,9 @@
     }
 
     # Check row_name and data grouping for ezt
-    if ("row_name" %in% args) {
-      if (!is.null(row_name)) {
-        if (!is.character(row_name)) {
+    if("row_name" %in% args){
+      if(!is.null(row_name)){
+        if(!is.character(row_name)){
           rlang::abort(
             message = c(
               cli::style_bold("If defined, row_name must be a string"),
@@ -172,7 +183,7 @@
           )
         }
       }
-      if (dplyr::is_grouped_df(x) == TRUE) {
+      if(dplyr::is_grouped_df(x) == TRUE){
         rlang::abort(
           message = c(
             cli::style_bold("Dataset cannot be grouped!"),
@@ -184,4 +195,5 @@
 
   # Success
   return()
+  }
 }
