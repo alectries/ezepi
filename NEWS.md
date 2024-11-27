@@ -1,5 +1,9 @@
 # ezepi Changelog
 
+## ezepi 2.0.0
+
+Rewrite of the ezepi codebase. Currently in progress.
+
 ## ezepi 1.0.0
 
 This is the first release version of ezepi. Tests are now passing, and the package is considered stable. New releases will be feature releases.
