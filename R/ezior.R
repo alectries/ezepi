@@ -56,15 +56,10 @@ ezior <- function(x,
 
   # pull numbers from fmsb for tibble
   ezior.res <- tibble::tibble(
-    item = c(
-      "Odds Ratio", "LCI", "UCI", "p-value"
-    ),
-    result = c(
-      as.numeric(ezior.fmsb$estimate),
-      as.numeric(ezior.fmsb$conf.int[1]),
-      as.numeric(ezior.fmsb$conf.int[2]),
-      as.numeric(ezior.fmsb$p.value)
-    )
+    "Odds Ratio" = as.numeric(ezior.fmsb$estimate),
+    "LCI" = as.numeric(ezior.fmsb$conf.int[1]),
+    "UCI" = as.numeric(ezior.fmsb$conf.int[2]),
+    "p-value" = as.numeric(ezior.fmsb$p.value)
   )
 
   return(ezior.res)
