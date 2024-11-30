@@ -57,7 +57,7 @@ standardize <- function(args, list){
     # Mutate non-referent exposures
     if(rexp & !iexp){
       x.df$exp <- ifelse(
-        !is.na(x.df$exp) & x.df$exp != paste0(list$ref+exp),
+        !is.na(x.df$exp) & x.df$exp != paste0(list$ref_exp),
         paste0("exp.", x.df$exp),
         x.df$exp
       )

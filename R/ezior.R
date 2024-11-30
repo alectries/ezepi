@@ -32,7 +32,7 @@ ezior <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "evar", "ovar", "iexp", "rexp", "iout", "rout"),
-    as.list(match.call()[-1])
+    modifyList(formals(ezepi::ezior), as.list(match.call()[-1]))
   )
 
   # generate a table with totals
