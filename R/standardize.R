@@ -1,4 +1,4 @@
-#' .standardize: Standardize variables
+#' standardize: Standardize variables
 #'
 #' Not exported. Takes variables from original data and moves them to exposure and outcome variables.
 #'

@@ -1,4 +1,4 @@
-#' .table: Build counts table to pass to fmsb
+#' table: Build counts table to pass to fmsb
 #'
 #' Not exported. Takes standardized table and generates counts table for fmsb.
 #'
