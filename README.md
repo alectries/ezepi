@@ -14,5 +14,6 @@ calculation of common epidemiological measures of occurrence and
 association from pre-existing datasets. ezepi is built using the
 tidyverse and fmsb.
 
-This branch (v2) is an active rewrite of the ezepi package. You should
-switch back tot he main branch if you would like to use ezepi.
+This branch (main) is an active rewrite of ezepi. Download the latest
+release (v1.0.0) to use a functioning (but not perfect) version of
+ezepi.
