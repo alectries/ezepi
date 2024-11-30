@@ -46,10 +46,10 @@ ezior <- function(x,
   # calc odds ratio from table
   sink(file = nullfile())
   ezior.fmsb <- fmsb::oddsratio(
-    ezior.df[ezior.df$exp == 'exposed', 'case'],
-    ezior.df[ezior.df$exp == 'unexposed', 'case'],
-    ezior.df[ezior.df$exp == 'exposed', 'control'],
-    ezior.df[ezior.df$exp == 'unexposed', 'control'],
+    ezior.df[ezior.df$exp == 'exposed', 'case'][[1]],
+    ezior.df[ezior.df$exp == 'unexposed', 'case'][[1]],
+    ezior.df[ezior.df$exp == 'exposed', 'control'][[1]],
+    ezior.df[ezior.df$exp == 'unexposed', 'control'][[1]],
     conf.level = conf_lvl
   )
   sink()
