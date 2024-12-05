@@ -2,7 +2,12 @@
 
 ## ezepi 2.0.0
 
-Rewrite of the ezepi codebase. Currently in progress.
+- **Refactored all code.** ezepi is now modular, easier to read (and maintain), and computationally cheaper. This was accomplished by:
+  - Drastically reducing the number of external functions used.
+  - Eliminating repeat calculations by saving intermediate states more often.
+  - Importing individual external functions rather than their packages. (I'm learning!)
+- **Changed results format.** Results are still printed in a human-readable tibble, but values are now printed in columns, so you can do something like ezior(...)$`Odds Ratio` to easily retrieve just the estimate.
+- **Added moreird and moreirr.** You can now calculate rate measures across multiple exposures.
 
 ## ezepi 1.0.0
 
