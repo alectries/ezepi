@@ -54,7 +54,8 @@ table <- function(x.df, index, risk, rate){
 
     # join tables
     table.df <- case.df %>%
-      dplyr::inner_join(pt.df, by = join_by(exp))
+      dplyr::inner_join(pt.df, by = join_by(exp)) %>%
+      dplyr::mutate(rate = case / pt)
 
     return(table.df)
   }
@@ -78,7 +79,8 @@ table <- function(x.df, index, risk, rate){
 
     # join tables
     table.df <- case.df %>%
-      dplyr::inner_join(pt.df, by = join_by(exp))
+      dplyr::inner_join(pt.df, by = join_by(exp)) %>%
+      dplyr::mutate(rate = case / pt)
 
     return(table.df)
   }
