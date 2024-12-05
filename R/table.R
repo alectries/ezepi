@@ -35,6 +35,19 @@ table <- function(x.df, index, risk, rate){
     return(table.df)
   }
 
+  # moreprev
+  if(!index & is.na(risk) & !rate){
+    table.df <- x.df %>%
+      dplyr::filter(!is.na(out)) %>%
+      dplyr::group_by(out) %>%
+      dplyr::tally() %>%
+      dplyr::mutate(total = sum(n)) %>%
+      dplyr::mutate(prevalence = n / total) %>%
+      dplyr::select(-total, -n)
+
+    return(table.df)
+  }
+
   # ezird, ezirr
   if(index & is.na(risk) & rate){
     # generate person-time table
@@ -81,23 +94,6 @@ table <- function(x.df, index, risk, rate){
     table.df <- case.df %>%
       dplyr::inner_join(pt.df, by = join_by(exp)) %>%
       dplyr::mutate(rate = case / pt)
-
-    return(table.df)
-  }
-
-  # moreprev
-  if(!index & is.na(risk) & !rate){
-    table.df <- x.df %>%
-      dplyr::filter(!is.na(out)) %>%
-      dplyr::group_by(out) %>%
-      dplyr::tally() %>%
-      tidyr::spread(out, n) %>%
-      tibble::add_column(out = c("count"), .before = 1) %>%
-      ezepi::ezt("out", numeric_data = TRUE) %>%
-      dplyr::mutate("total" = sum(count)) %>%
-      dplyr::mutate("prevalence" = count / total) %>%
-      ezepi::mutate_rows(total = rowSums(dplyr::across(tidyselect::where(is.numeric))), .numeric_data = TRUE) %>%
-      dplyr::select(!total)
 
     return(table.df)
   }
