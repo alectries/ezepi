@@ -11,7 +11,8 @@ eztbl(
   index_exp = 1,
   ref_exp = 0,
   index_out = 1,
-  ref_out = 0
+  ref_out = 0,
+  risk = TRUE
 )
 }
 \arguments{
@@ -28,11 +29,13 @@ eztbl(
 \item{index_out}{The value of outcome_var to treat as cases. Defaults to 1.}
 
 \item{ref_out}{The value of outcome_var to treat as non-cases. Defaults to 0.}
+
+\item{risk}{If TRUE, calculates risks. If FALSE, calculates odds.}
 }
 \value{
 A tibble.
 }
 \description{
 Returns a tibble with stratified counts by exposure and outcome, along with
-sums and risks by exposure status.
+sums and risks or odds by exposure status.
 }

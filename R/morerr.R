@@ -12,13 +12,9 @@
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
-#' @import dplyr
-#' @import fmsb
-#' @import magrittr
-#' @import rlang
-#' @import tibble
-#' @import tidyr
-#' @import tidyselect
+#' @importFrom fmsb riskratio
+#' @importFrom tibble tibble_row
+#' @importFrom dplyr bind_rows
 #' @export
 morerr <- function(x,
                    exposure_var,
@@ -29,136 +25,49 @@ morerr <- function(x,
                    conf_lvl = 0.95
 ){
   # startup
-  ## check that required packages are loaded
-  if("dplyr" %in% (.packages())){} else {
-    stop("ezepi: ezepi requires the tidyverse. Please execute library(tidyverse) or library(ezepi) before continuing.")
-  }
-  if("fmsb" %in% (.packages())){} else {
-    stop("ezepi: ezepi requires fmsb. Please execute library(fmsb) or library(ezepi) before continuing.")
-  }
-  ## check that required vars exist
-  if(
-    is_empty(select({{x}}, {{exposure_var}}))
-  ){
-    stop("ezepi: Must specify exposure_var!")
-  }
-  if(
-    is_empty(select({{x}}, {{outcome_var}}))
-  ){
-    stop("ezepi: Must specify outcome_var!")
-  }
-
-  ## pull vars
-  test.exp <- x %>%
-    pull({{exposure_var}})
-  test.out <- x %>%
-    pull({{outcome_var}})
-  test.df <- data.frame(test.exp, test.out)
-  ## tests
-  if(
-    class(test.exp) == class({{ref_exp}})
-  ){
-    message(paste0("ezepi: Referent exposure value is ", {{ref_exp}}))
-  } else {
-    stop("ezepi: Error: referent exposure does not match variable type")
-  }
-  if(
-    test.df %>% filter(test.exp == {{ref_exp}}) %>% summarise(test.exp = n()) >= 1
-  ){
-    message("ezepi: Exposure variable set.")
-  } else {
-    stop("ezepi: Error: referent value does not exist in exposure_var")
-  }
-  if(
-    class(test.out) == class({{index_out}}) &
-    class(test.out) == class({{ref_out}})
-  ){
-    message(paste0("ezepi: Index outcome value is ", {{index_out}},
-                   " and referent outcome value is ", {{ref_out}}))
-  } else {
-    stop("ezepi: Error: index/referent outcome does not match variable type")
-  }
-  if(
-    test.df %>% filter(test.out == {{index_out}}) %>% summarise(test.out = n()) >= 1 &
-    test.df %>% filter(test.out == {{ref_out}}) %>% summarise(test.out = n()) >= 1
-  ){
-    message("ezepi: Outcome variable set.")
-  } else {
-    stop("ezepi: Error: index/referent value does not exist in outcome_var")
-  }
+  ## startup function will go here later
 
   # standardize data
-  x.df <- x %>%
-    mutate(exp = case_when({{exposure_var}} == {{ref_exp}} ~ 'unexposed',
-                           !is.na({{exposure_var}}) & {{exposure_var}} != {{ref_exp}} ~
-                             paste0('exp.', {{exposure_var}}),
-                           .default = NA)) %>%
-    mutate(out = case_when({{outcome_var}} == {{index_out}} ~ 'case',
-                           {{outcome_var}} == {{ref_out}} ~ 'control',
-                           .default = NA))
+  x.df <- ezepi:::standardize(
+    c("xdat", "evar", "ovar", "rexp", "iout", "rout"),
+    modifyList(formals(ezepi::morerr), as.list(match.call()[-1]))
+  )
 
   # generate a table with totals
-  morerr.df <- x.df %>%
-    filter(!is.na(exp)) %>%
-    filter(out == 'case' | out == 'control') %>%
-    group_by(exp, out) %>%
-    tally() %>%
-    spread(out, n) %>%
-    mutate(total = rowSums(across(everything()))) %>%
-    mutate(risk = case / total)
+  morerr.df <- ezepi:::table(
+    x.df,
+    index = FALSE,
+    risk = TRUE,
+    rate = FALSE
+  )
+  print(morerr.df)
 
   # calc risk ratios and CIs to add to table
-  morerr.res <- morerr.df %>%
-    # RR estimate
-    mutate(RR = as.numeric(fmsb::riskratio(
-      case,
-      morerr.df %>%
-        filter(exp == 'unexposed') %>%
-        pull(case),
-      total,
-      morerr.df %>%
-        filter(exp == 'unexposed') %>%
-        pull(total),
+  morerr.list <- list()
+  for(i in 1:nrow(morerr.df)){
+    # calc risk ratio
+    sink(file = nullfile())
+    morerr.fmsb <- fmsb::riskratio(
+      morerr.df[i, 'case'][[1]],
+      morerr.df[morerr.df$exp == 'unexposed', 'case'][[1]],
+      morerr.df[i, 'total'][[1]],
+      morerr.df[morerr.df$exp == 'unexposed', 'total'][[1]],
       conf.level = conf_lvl
-    ) %>% unlist() %>% unname() %>%
-      data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
-                          'method', 'data.name'), value = .) %>%
-      filter(name == 'estimate') %>%
-      pull(value))) %>%
-    # Lower CI for RR
-    mutate(LCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
-      case,
-      morerr.df %>%
-        filter(exp == 'unexposed') %>%
-        pull(case),
-      total,
-      morerr.df %>%
-        filter(exp == 'unexposed') %>%
-        pull(total),
-      conf.level = conf_lvl
-    ) %>% unlist() %>% unname() %>%
-      data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
-                          'method', 'data.name'), value = .) %>%
-      filter(name == 'conf.int1') %>%
-      pull(value)),
-    exp == 'unexposed' ~ 0)) %>%
-    # Upper CI for RR
-    mutate(UCI = case_when(exp != 'unexposed' ~ as.numeric(fmsb::riskratio(
-      case,
-      morerr.df %>%
-        filter(exp == 'unexposed') %>%
-        pull(case),
-      total,
-      morerr.df %>%
-        filter(exp == 'unexposed') %>%
-        pull(total),
-      conf.level = conf_lvl
-    ) %>% unlist() %>% unname() %>%
-      data.frame(name = c('p.value', 'conf.int1', 'conf.int2', 'estimate',
-                          'method', 'data.name'), value = .) %>%
-      filter(name == 'conf.int2') %>%
-      pull(value)),
-    exp == 'unexposed' ~ 0))
+    )
+    sink()
+
+    # add row to list
+    morerr.list[[i]] <- tibble::tibble_row(
+      "Exposure" = morerr.df$exp[[i]],
+      "Risk Ratio" = as.numeric(morerr.fmsb$estimate),
+      "LCI" = as.numeric(morerr.fmsb$conf.int[1]),
+      "UCI" = as.numeric(morerr.fmsb$conf.int[2]),
+      "p-value" = as.numeric(morerr.fmsb$p.value)
+    )
+  }
+
+  # combine into table
+  morerr.res <- dplyr::bind_rows(morerr.list)
 
   return(morerr.res)
 }

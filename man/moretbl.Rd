@@ -4,7 +4,15 @@
 \alias{moretbl}
 \title{moretbl: nx2 contingency table from categorical exposure and outcome variables}
 \usage{
-moretbl(x, exposure_var, outcome_var, ref_exp = 0, index_out = 1, ref_out = 0)
+moretbl(
+  x,
+  exposure_var,
+  outcome_var,
+  ref_exp = 0,
+  index_out = 1,
+  ref_out = 0,
+  risk = TRUE
+)
 }
 \arguments{
 \item{x}{A dataset.}
@@ -18,14 +26,16 @@ moretbl(x, exposure_var, outcome_var, ref_exp = 0, index_out = 1, ref_out = 0)
 \item{index_out}{The value of outcome_var to treat as cases. Defaults to 1.}
 
 \item{ref_out}{The value of outcome_var to treat as non-cases. Defaults to 0.}
+
+\item{risk}{If TRUE, calculates risks. If FALSE, calculates odds.}
 }
 \value{
 A tibble.
 }
 \description{
 Returns a tibble with stratified counts by exposure and outcome, along with
-sums and risks by exposure status. Like eztbl, but allows for more exposure
-categories (but still binary outcome).
+sums and risks or odds by exposure status. Like eztbl, but allows for more
+exposure categories (but still binary outcome).
 }
 \details{
 Note: Before using moretbl, you must collapse all missing variables to NA.
