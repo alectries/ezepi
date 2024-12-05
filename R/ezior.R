@@ -42,6 +42,7 @@ ezior <- function(x,
     risk = FALSE,
     rate = FALSE
   )
+  print(ezior.df)
 
   # calc odds ratio from table
   sink(file = nullfile())
