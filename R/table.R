@@ -64,7 +64,7 @@ table <- function(x.df, index, risk, rate){
   if(!index & is.na(risk) & rate){
     # generate person-time table
     pt.df <- x.df %>%
-      dplyr::filter(is.na(exp)) %>%
+      dplyr::filter(!is.na(exp)) %>%
       dplyr::filter(out == 'case' | out == 'control') %>%
       dplyr::group_by(exp) %>%
       dplyr::select(!out) %>%
@@ -72,7 +72,7 @@ table <- function(x.df, index, risk, rate){
 
     # generate counts table
     case.df <- x.df %>%
-      dplyr::filter(is.na(exp)) %>%
+      dplyr::filter(!is.na(exp)) %>%
       dplyr::filter(out == 'case') %>%
       dplyr::group_by(exp) %>%
       dplyr::summarize(case = n())
