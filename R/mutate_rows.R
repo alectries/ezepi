@@ -10,13 +10,7 @@
 #' @param ... Name-value pairs and other arguments. See \code{\link[dplyr]{mutate}}.
 #' @param .numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
-#' @import dplyr
-#' @import fmsb
-#' @import magrittr
-#' @import rlang
-#' @import tibble
-#' @import tidyr
-#' @import tidyselect
+#' @importFrom dplyr mutate
 #' @export
 
 mutate_rows <- function(
@@ -25,27 +19,15 @@ mutate_rows <- function(
     .numeric_data = FALSE
   ){
   # setup
-  ## check that required packages are loaded
-  if("dplyr" %in% (.packages())){} else {
-    stop("ezepi: ezepi requires the tidyverse. Please execute library(tidyverse) or library(ezepi) before continuing.")
-  }
-  if("fmsb" %in% (.packages())){} else {
-    stop("ezepi: ezepi requires fmsb. Please execute library(fmsb) or library(ezepi) before continuing.")
-  }
-  ## check that required vars exist
-  if(
-    is_empty({{x}})
-  ){
-    stop("ezepi: Must specify a dataset!")
-  }
+  ## startup function will go here later
 
   # get first column name
   orig_name <- names(x)[1]
 
   # add rows
-  x %>%
-    ezt(row_name = "temp_headers", numeric_data = {{.numeric_data}}) %>%
-    mutate(...) %>%
-    ezt(row_name = orig_name, numeric_data = {{.numeric_data}}) %>%
-    return()
+  x.1 <- ezepi::ezt(x, row_name = "temp_headers", numeric_data = .numeric_data)
+  x.m <- dplyr::mutate(x.1, ...)
+  x.0 <- ezepi::ezt(x.m, row_name = orig_name, numeric_data = .numeric_data)
+
+  return(x.0)
 }
