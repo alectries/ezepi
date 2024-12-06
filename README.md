@@ -86,7 +86,7 @@ assumed to be disjoint. more functions do *not* require you to specify
 will be considered treatment groups and compared to `ref_exp`. more
 functions include:
 
-1.  **moreprev** Generates a table with prevalences of a specified
+1.  **moreprev**: Generates a table with prevalences of a specified
     outcome.
 2.  **moretbl**: Generates a table with counts, totals, and risks (or
     odds) of the specified outcome according to exposure category.
@@ -98,10 +98,10 @@ functions include:
     for each exposed group compared with the unexposed group.
 6.  **moreior**: Generates a table with incidence odds ratios, CIs, and
     p-values for each exposed group compared with the unexposed group.
-7.  **moreird** Generates a table with incidence rate differences, CIs,
+7.  **moreird**: Generates a table with incidence rate differences, CIs,
     and p-values for each exposed group compared with the unexposed
     group.
-8.  **moreirr** Generates a table with incidence rate ratios, CIs, and
+8.  **moreirr**: Generates a table with incidence rate ratios, CIs, and
     p-values for each exposed group compared with the unexposed group.
 
 ### Utility functions

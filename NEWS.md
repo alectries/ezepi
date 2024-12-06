@@ -1,5 +1,8 @@
 # ezepi Changelog
 
+## ezepi 2.0.1
+- **Bug fixes**: Fixed some scattered import issues.
+
 ## ezepi 2.0.0
 
 - **Refactored all code.** ezepi is now modular, easier to read (and maintain), and computationally cheaper. This was accomplished by:
