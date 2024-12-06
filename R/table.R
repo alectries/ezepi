@@ -14,6 +14,9 @@
 #' @importFrom dplyr mutate
 #' @importFrom dplyr select
 #' @importFrom dplyr summarize
+#' @importFrom dplyr n
+#' @importFrom dplyr inner_join
+#' @importFrom dplyr join_by
 #' @importFrom tibble add_column
 #' @importFrom tidyselect where
 #' @keywords internal
@@ -63,11 +66,11 @@ table <- function(x.df, index, risk, rate){
       dplyr::filter(exp == 'exposed' | exp == 'unexposed') %>%
       dplyr::filter(out == 'case') %>%
       dplyr::group_by(exp) %>%
-      dplyr::summarize(case = n())
+      dplyr::summarize(case = dplyr::n())
 
     # join tables
     table.df <- case.df %>%
-      dplyr::inner_join(pt.df, by = join_by(exp)) %>%
+      dplyr::inner_join(pt.df, by = dplyr::join_by(exp)) %>%
       dplyr::mutate(rate = case / pt)
 
     return(table.df)
@@ -88,11 +91,11 @@ table <- function(x.df, index, risk, rate){
       dplyr::filter(!is.na(exp)) %>%
       dplyr::filter(out == 'case') %>%
       dplyr::group_by(exp) %>%
-      dplyr::summarize(case = n())
+      dplyr::summarize(case = dplyr::n())
 
     # join tables
     table.df <- case.df %>%
-      dplyr::inner_join(pt.df, by = join_by(exp)) %>%
+      dplyr::inner_join(pt.df, by = dplyr::join_by(exp)) %>%
       dplyr::mutate(rate = case / pt)
 
     return(table.df)
