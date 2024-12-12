@@ -12,6 +12,7 @@
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @return A tibble.
+#' @importFrom utils modifyList
 #' @importFrom rlang `:=`
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble tibble_row
@@ -31,7 +32,7 @@ moreir <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "evar", "ovar", "ptim", "rexp", "iout", "rout"),
-    modifyList(formals(ezepi::moreir), as.list(match.call()[-1]))
+    utils::modifyList(formals(ezepi::moreir), as.list(match.call()[-1]))
   )
 
   # generate a table with totals

@@ -12,6 +12,7 @@
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
+#' @importFrom utils modifyList
 #' @importFrom fmsb oddsratio
 #' @importFrom tibble tibble_row
 #' @importFrom dplyr bind_rows
@@ -30,7 +31,7 @@ moreior <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "evar", "ovar", "rexp", "iout", "rout"),
-    modifyList(formals(ezepi::moreior), as.list(match.call()[-1]))
+    utils::modifyList(formals(ezepi::moreior), as.list(match.call()[-1]))
   )
 
   # generate a table with totals

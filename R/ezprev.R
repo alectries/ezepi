@@ -8,6 +8,7 @@
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @return A tibble.
+#' @importFrom utils modifyList
 #' @export
 ezprev <- function(x,
                    outcome_var,
@@ -20,7 +21,7 @@ ezprev <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "ovar", "iout", "rout"),
-    modifyList(formals(ezepi::ezprev), as.list(match.call()[-1]))
+    utils::modifyList(formals(ezepi::ezprev), as.list(match.call()[-1]))
   )
 
   # generate a table with totals

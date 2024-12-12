@@ -6,6 +6,7 @@
 #' @param x A dataset.
 #' @param outcome_var A categorical outcome variable in x.
 #' @return A tibble.
+#' @importFrom utils modifyList
 #' @export
 moreprev <- function(x,
                      outcome_var
@@ -16,7 +17,7 @@ moreprev <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "ovar"),
-    modifyList(formals(ezepi::moreprev), as.list(match.call()[-1]))
+    utils::modifyList(formals(ezepi::moreprev), as.list(match.call()[-1]))
   )
 
   # generate a table

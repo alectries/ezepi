@@ -15,6 +15,7 @@
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param risk If TRUE, calculates risks. If FALSE, calculates odds.
 #' @return A tibble.
+#' @importFrom utils modifyList
 #' @importFrom rlang `:=`
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble tibble_row
@@ -34,7 +35,7 @@ moretbl <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "evar", "ovar", "rexp", "iout", "rout"),
-    modifyList(formals(ezepi::eztbl), as.list(match.call()[-1]))
+    utils::modifyList(formals(ezepi::eztbl), as.list(match.call()[-1]))
   )
 
   # generate a table with totals
