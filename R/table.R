@@ -17,6 +17,7 @@
 #' @importFrom dplyr n
 #' @importFrom dplyr inner_join
 #' @importFrom dplyr join_by
+#' @importFrom dplyr ungroup
 #' @importFrom tibble add_column
 #' @importFrom tidyselect where
 #' @keywords internal
@@ -33,7 +34,8 @@ table <- function(x.df, index, risk, rate){
       dplyr::tally() %>%
       tidyr::spread(out, n) %>%
       dplyr::mutate(total = rowSums(across(everything()))) %>%
-      dplyr::mutate(prevalence = case / total)
+      dplyr::mutate(prevalence = case / total) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -46,7 +48,8 @@ table <- function(x.df, index, risk, rate){
       dplyr::tally() %>%
       dplyr::mutate(total = sum(n)) %>%
       dplyr::mutate(prevalence = n / total) %>%
-      dplyr::select(-total, -n)
+      dplyr::select(-total, -n) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -71,7 +74,8 @@ table <- function(x.df, index, risk, rate){
     # join tables
     table.df <- case.df %>%
       dplyr::inner_join(pt.df, by = dplyr::join_by(exp)) %>%
-      dplyr::mutate(rate = case / pt)
+      dplyr::mutate(rate = case / pt) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -96,7 +100,8 @@ table <- function(x.df, index, risk, rate){
     # join tables
     table.df <- case.df %>%
       dplyr::inner_join(pt.df, by = dplyr::join_by(exp)) %>%
-      dplyr::mutate(rate = case / pt)
+      dplyr::mutate(rate = case / pt) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -110,7 +115,8 @@ table <- function(x.df, index, risk, rate){
       dplyr::tally() %>%
       tidyr::spread(out, n) %>%
       dplyr::mutate(total = rowSums(across(everything()))) %>%
-      dplyr::mutate(risk = case / total)
+      dplyr::mutate(risk = case / total) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -124,7 +130,8 @@ table <- function(x.df, index, risk, rate){
       dplyr::tally() %>%
       tidyr::spread(out, n) %>%
       dplyr::mutate(total = rowSums(across(everything()))) %>%
-      dplyr::mutate(risk = case / total)
+      dplyr::mutate(risk = case / total) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -138,7 +145,8 @@ table <- function(x.df, index, risk, rate){
       dplyr::tally() %>%
       tidyr::spread(out, n) %>%
       dplyr::mutate(total = rowSums(across(everything()))) %>%
-      dplyr::mutate(odds = case / control)
+      dplyr::mutate(odds = case / control) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
@@ -152,7 +160,8 @@ table <- function(x.df, index, risk, rate){
       dplyr::tally() %>%
       tidyr::spread(out, n) %>%
       dplyr::mutate(total = rowSums(across(everything()))) %>%
-      dplyr::mutate(odds = case / control)
+      dplyr::mutate(odds = case / control) %>%
+      dplyr::ungroup()
 
     return(table.df)
   }
