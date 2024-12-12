@@ -1,7 +1,7 @@
 # ezepi Changelog
 
 ## ezepi 2.0.1
-- **Bug fixes**: Fixed some scattered import issues.
+- **Bug fixes**: Fixed some scattered import issues. Fixed table outputs being grouped.
 
 ## ezepi 2.0.0
 
