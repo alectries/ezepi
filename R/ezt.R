@@ -9,6 +9,7 @@
 #' @param numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
 #' @importFrom rlang `:=`
+#' @importFrom stats setNames
 #' @importFrom tibble tibble
 #' @importFrom tibble add_column
 #' @importFrom dplyr slice
@@ -37,7 +38,7 @@ ezt <- function(
 
   # set column names
   x.df <- dplyr::slice(
-    setNames(x.df, dplyr::slice(x.df, 1)),
+    stats::setNames(x.df, dplyr::slice(x.df, 1)),
     -1
   )
 
