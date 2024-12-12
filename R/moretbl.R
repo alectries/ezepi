@@ -15,6 +15,7 @@
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param risk If TRUE, calculates risks. If FALSE, calculates odds.
 #' @return A tibble.
+#' @importFrom rlang `:=`
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble tibble_row
 #' @export
@@ -27,6 +28,7 @@ moretbl <- function(x,
                   risk = TRUE
 ){
   # startup
+  `:=` <- rlang::`:=`
   ## startup function will go here later
 
   # standardize data

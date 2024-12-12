@@ -12,6 +12,7 @@
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @return A tibble.
+#' @importFrom rlang `:=`
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble tibble_row
 #' @export
@@ -24,6 +25,7 @@ moreir <- function(x,
                  ref_out = 0
 ){
   # startup
+  `:=` <- rlang::`:=`
   ## startup function will go here later
 
   # standardize data

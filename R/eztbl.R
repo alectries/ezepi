@@ -11,6 +11,7 @@
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param risk If TRUE, calculates risks. If FALSE, calculates odds.
+#' @importFrom rlang `:=`
 #' @importFrom dplyr bind_rows
 #' @importFrom tibble tibble_row
 #' @return A tibble.
@@ -25,6 +26,7 @@ eztbl <- function(x,
                   risk = TRUE
 ){
   # startup
+  `:=` <- rlang::`:=`
   ## startup function will go here later
 
   # standardize data

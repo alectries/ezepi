@@ -8,6 +8,7 @@
 #' @param row_name A string, which will be the name of the left-most column. Defaults to NULL, which will exclude the existing dataset's headers from the new dataset.
 #' @param numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
+#' @importFrom rlang `:=`
 #' @importFrom tibble tibble
 #' @importFrom tibble add_column
 #' @importFrom dplyr slice
@@ -22,6 +23,7 @@ ezt <- function(
     numeric_data = FALSE
 ){
   # startup
+  `:=` <- rlang::`:=`
   ## startup function will go here later
 
   # loop through columns
