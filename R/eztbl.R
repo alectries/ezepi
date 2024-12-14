@@ -28,7 +28,10 @@ eztbl <- function(x,
 ){
   # startup
   `:=` <- rlang::`:=`
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "evar", "ovar", "iexp", "rexp", "iout", "rout", "risk"),
+    utils::modifyList(formals(ezepi::eztbl), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

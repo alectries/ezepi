@@ -25,7 +25,10 @@ ezt <- function(
 ){
   # startup
   `:=` <- rlang::`:=`
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "rwnm", "numd"),
+    utils::modifyList(formals(ezepi::ezt), as.list(match.call()[-1]))
+  )
 
   # loop through columns
   x.df <- tibble::tibble(.rows = length(names(x)))

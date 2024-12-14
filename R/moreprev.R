@@ -12,7 +12,10 @@ moreprev <- function(x,
                      outcome_var
 ){
   # startup
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "ovar"),
+    utils::modifyList(formals(ezepi::moreprev), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

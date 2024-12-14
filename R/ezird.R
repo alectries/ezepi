@@ -30,7 +30,10 @@ ezird <- function(x,
                   conf_lvl = 0.95
 ){
   # startup
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "evar", "ovar", "ptim", "iexp", "rexp", "iout", "rout", "clvl"),
+    utils::modifyList(formals(ezepi::ezird), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

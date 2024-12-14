@@ -16,7 +16,10 @@ ezprev <- function(x,
                    ref_out = 0
 ){
   # startup
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "ovar", "iout", "rout"),
+    utils::modifyList(formals(ezepi::ezprev), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

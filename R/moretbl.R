@@ -31,6 +31,10 @@ moretbl <- function(x,
   # startup
   `:=` <- rlang::`:=`
   ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "evar", "ovar", "rexp", "iout", "rout", "risk"),
+    utils::modifyList(formals(ezepi::moretbl), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

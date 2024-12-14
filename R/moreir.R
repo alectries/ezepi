@@ -27,7 +27,10 @@ moreir <- function(x,
 ){
   # startup
   `:=` <- rlang::`:=`
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "evar", "ovar", "ptim", "rexp", "iout", "rout"),
+    utils::modifyList(formals(ezepi::moreir), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

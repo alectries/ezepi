@@ -29,7 +29,10 @@ ezir <- function(x,
 ){
   # startup
   `:=` <- rlang::`:=`
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "evar", "ovar", "ptim", "iexp", "rexp", "iout", "rout"),
+    utils::modifyList(formals(ezepi::ezir), as.list(match.call()[-1]))
+  )
 
   # standardize data
   x.df <- ezepi:::standardize(

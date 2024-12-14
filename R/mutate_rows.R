@@ -19,7 +19,10 @@ mutate_rows <- function(
     .numeric_data = FALSE
   ){
   # setup
-  ## startup function will go here later
+  ezepi:::startup(
+    c("xdat", "numd"),
+    utils::modifyList(formals(ezepi::mutate_rows), as.list(match.call()[-1]))
+  )
 
   # get first column name
   orig_name <- names(x)[1]
