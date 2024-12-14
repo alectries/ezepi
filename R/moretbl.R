@@ -30,7 +30,6 @@ moretbl <- function(x,
 ){
   # startup
   `:=` <- rlang::`:=`
-  ## startup function will go here later
   ezepi:::startup(
     c("xdat", "evar", "ovar", "rexp", "iout", "rout", "risk"),
     utils::modifyList(formals(ezepi::moretbl), as.list(match.call()[-1]))
@@ -39,7 +38,7 @@ moretbl <- function(x,
   # standardize data
   x.df <- ezepi:::standardize(
     c("xdat", "evar", "ovar", "rexp", "iout", "rout"),
-    utils::modifyList(formals(ezepi::eztbl), as.list(match.call()[-1]))
+    utils::modifyList(formals(ezepi::moretbl), as.list(match.call()[-1]))
   )
 
   # generate a table with totals
