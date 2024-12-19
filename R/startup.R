@@ -221,7 +221,7 @@ startup <- function(args, list){
     # Is value 0.95?
     if(list$conf_lvl != 0.95){
       rlang::inform(
-        paste0(cli::style_bold("ezepi:"), "Using ", list$conf_lvl, " confidence.")
+        message = c("i" = paste0(cli::style_bold("ezepi:"), " Using ", list$conf_lvl, " confidence."))
       )
     }
   }
