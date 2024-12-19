@@ -229,9 +229,9 @@ startup <- function(args, list){
   # rwnm
   if(rwnm){
     ## only activate if row_name is set
-    if(!is.null(row_name)){
+    if(!is.null(list$row_name)){
       # Is row_name unique?
-      if(row_name %in% dplyr::pull(list$x, 1)){
+      if(list$row_name %in% dplyr::pull(x, 1)){
         rlang::abort(
           message = c(
             cli::style_bold("Row name must be unique!"),
@@ -247,9 +247,29 @@ startup <- function(args, list){
   # numd
   if(numd){
     # Get value
-    numeric_data <- get0(
-      "list$numeric_data",
-      ifnotfound = get0("list$.numeric_data")
+    numeric_data <- if(!is.null(list$numeric_data)){
+      eval(list$numeric_data)
+    } else {
+      eval(list$.numeric_data)
+    }
+
+    # Error if not logical
+    tryCatch(
+      {if(numeric_data){TRUE} else {FALSE}},
+      error = function(cond){rlang::abort(
+        message = c(
+          cli::style_bold("numeric_data is not logical!"),
+          "x" = paste0(numeric_data, " is not TRUE or FALSE."),
+          "i" = ifelse(
+            as.character(numeric_data) == "T", "Use TRUE instead.",
+            ifelse(
+              as.character(numeric_data) == "F", "Use FALSE instead.",
+              "Use TRUE or FALSE."
+            )
+          )
+        ),
+        call = rlang::caller_env(5)
+      )}
     )
 
     ## only activate if numeric_data is TRUE
