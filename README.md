@@ -98,10 +98,10 @@ functions include:
     for each exposed group compared with the unexposed group.
 6.  **moreior**: Generates a table with incidence odds ratios, CIs, and
     p-values for each exposed group compared with the unexposed group.
-7.  **moreird** Generates a table with incidence rate differences, CIs,
+7.  **moreird**: Generates a table with incidence rate differences, CIs,
     and p-values for each exposed group compared with the unexposed
     group.
-8.  **moreirr** Generates a table with incidence rate ratios, CIs, and
+8.  **moreirr**: Generates a table with incidence rate ratios, CIs, and
     p-values for each exposed group compared with the unexposed group.
 
 ### Utility functions
@@ -121,7 +121,7 @@ This package is now in stable condition.
 
 ### Coming changes
 
-- Recreate sanity checking with rlang.
+- Create simple plots, like epi curves, directly from line-list data.
 
 ## Legal
 
