@@ -14,7 +14,7 @@ functions are wrappers of fmsb.
 Run the following commands in your R console to install ezepi:
 
     install.packages("devtools")
-    devtools::install_github("alectries/ezepi@v2.0.1")
+    devtools::install_github("alectries/ezepi@v2.1.0")
 
 You can update ezepi by running `devtools::update_packages()` and
 selecting the option for ezepi.

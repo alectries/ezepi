@@ -1,5 +1,16 @@
 # ezepi Changelog
 
+## ezepi 2.1.0
+
+### Added
+
+- **Error checking.**: Added startup error checks to ezepi.
+
+### Changed
+
+- **Piping fixes.**: Fixed non-standard evaluation to support dataset piping again.
+- **Row mutation fixes.**: Fixed mutate_rows, which had broken after changes to ezt.
+
 ## ezepi 2.0.1
 - **Bug fixes**: Fixed some scattered import issues. Fixed table outputs being grouped.
 
