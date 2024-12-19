@@ -10,6 +10,7 @@
 #' @importFrom rlang caller_env
 #' @importFrom cli style_bold
 #' @importFrom dplyr pull
+#' @importFrom magrittr `%>%`
 #' @keywords internal
 
 startup <- function(args, list){
@@ -31,8 +32,13 @@ startup <- function(args, list){
   if(xdat){
     # Does dataset exist? If yes, eval
     tryCatch(
-      {x <- eval(list$x)},
-      ## fail if eval fails
+      {
+        x <- if(as.character(list$x) == ".") {
+          get(".", envir = parent.frame(n=2))
+          } else {
+            get(as.character(list$x))
+            }
+        },
       error = function(cond){rlang::abort(
         message = c(
           cli::style_bold("x does not exist!"),
@@ -249,7 +255,7 @@ startup <- function(args, list){
     ## only activate if numeric_data is TRUE
     if(numeric_data){
       # Are the non-name columns numeric?
-      if(!all(sapply(births[-1], is.numeric))){
+      if(!all(sapply(x[-1], is.numeric))){
         rlang::abort(
           message = c(
             cli::style_bold("Data is non-numeric!"),

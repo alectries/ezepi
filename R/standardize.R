@@ -31,7 +31,11 @@ standardize <- function(args, list){
     )
   } else {
     # Pull dataframe from list
-    x <- eval(list$x)
+    x <- if(as.character(list$x) == ".") {
+      get(".", envir = parent.frame(n=2))
+    } else {
+      get(as.character(list$x))
+    }
 
     # Initialize standardized df
     x.df <- tibble::tibble(.rows = nrow(x))
