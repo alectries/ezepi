@@ -10,7 +10,11 @@
 #' @param ... Name-value pairs and other arguments. See \code{\link[dplyr]{mutate}}.
 #' @param .numeric_data Defaults to FALSE. When TRUE, data except the names column will be coerced to numeric.
 #' @return A tibble.
+#' @importFrom magrittr `%>%`
+#' @importFrom rlang `:=`
+#' @importFrom rlang `!!`
 #' @importFrom dplyr mutate
+#' @importFrom dplyr rename
 #' @export
 
 mutate_rows <- function(
@@ -19,6 +23,9 @@ mutate_rows <- function(
     .numeric_data = FALSE
   ){
   # setup
+  `%>%` <- magrittr::`%>%`
+  `:=` <- rlang::`:=`
+  `!!` <- rlang::`!!`
   ezepi:::startup(
     c("xdat", "numd"),
     utils::modifyList(formals(ezepi::mutate_rows), as.list(match.call()[-1]))
@@ -27,10 +34,21 @@ mutate_rows <- function(
   # get first column name
   orig_name <- names(x)[1]
 
-  # add rows
-  x.1 <- ezepi::ezt(x, row_name = "temp_headers", numeric_data = .numeric_data)
-  x.m <- dplyr::mutate(x.1, ...)
-  x.0 <- ezepi::ezt(x.m, row_name = orig_name, numeric_data = .numeric_data)
+  # add rows (data is numeric)
+  if(.numeric_data){
+    x.1 <- x %>% ezepi::ezt(row_name = "temp_headers", numeric_data = TRUE)
+    x.m <- dplyr::mutate(x.1, ...)
+    x.0 <- x.m %>% ezepi::ezt(row_name = "temp", numeric_data = TRUE)
+    x.f <- dplyr::rename(x.0, !!paste0(orig_name) := temp)
+  }
 
-  return(x.0)
+  # add rows (data is non-numeric)
+  if(!.numeric_data){
+    x.1 <- x %>% ezepi::ezt(row_name = "temp_headers", numeric_data = FALSE)
+    x.m <- dplyr::mutate(x.1, ...)
+    x.0 <- x.m %>% ezepi::ezt(row_name = "temp", numeric_data = FALSE)
+    x.f <- dplyr::rename(x.0, !!paste0(orig_name) := temp)
+  }
+
+  return(x.f)
 }
