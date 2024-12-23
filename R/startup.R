@@ -11,6 +11,7 @@
 #' @importFrom cli style_bold
 #' @importFrom dplyr pull
 #' @importFrom magrittr `%>%`
+#' @importFrom lubridate as_date
 #' @keywords internal
 
 startup <- function(args, list){
@@ -19,6 +20,7 @@ startup <- function(args, list){
   evar <- "evar" %in% args
   ovar <- "ovar" %in% args
   ptim <- "ptim" %in% args
+  dvar <- "dvar" %in% args
   iexp <- "iexp" %in% args
   rexp <- "rexp" %in% args
   iout <- "iout" %in% args
@@ -27,6 +29,9 @@ startup <- function(args, list){
   rwnm <- "rwnm" %in% args
   numd <- "numd" %in% args
   risk <- "risk" %in% args
+  srtd <- "srtd" %in% args
+  endd <- "endd" %in% args
+  titl <- "titl" %in% args
 
   # xdat
   if(xdat){
@@ -137,9 +142,55 @@ startup <- function(args, list){
         message = c(
           cli::style_bold("person_time must be numeric!"),
           "x" = paste0(list$person_time, " is not a numeric variable."),
-          "i" = paste0("Try as.numeric(", list$person_time, ").")
+          "i" = paste0("Try mutating first with as.numeric(", list$person_time, ").")
         ),
         call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # dvar
+  if(dvar){
+    # Does variable exist? If yes, pull
+    tryCatch(
+      {date_var <- dplyr::pull(x, list$date_var)},
+      ## fail if pull fails
+      error = function(cond){rlang::abort(
+        message = c(
+          cli::style_bold("Variable does not exist!"),
+          "x" = paste0(
+            ifelse(paste0(list$date_var) == "",
+                   "date_var",
+                   paste0(list$date_var)),
+            " does not exist in ",
+            list$x,
+            "."
+          ),
+          "i" = "Did you forget to specify date_var?"
+        ),
+        call = rlang::caller_env(5)
+      )}
+    )
+
+    # Is date_var interpretable?
+    if(is.numeric(date_var)){
+      rlang::warn(
+        message = c(
+          paste0(cli::style_bold("ezepi:"), " Using numeric date."),
+          "*" = paste0(list$date_var, " is numeric."),
+          "i" = paste0("Try mutating first with as.character(", list$date_var, ").")
+        )
+      )
+    } else {
+      # attempt to parse as date
+      tryCatch(
+        {lubridate::as_date(date_var)},
+        ## fail if as_date fails
+        error = function(cond){rlang::abort(
+          cli::style_bold("Date parser failed!"),
+          "x" = paste0(cond),
+          "i" = paste0("Try manually converting ", list$date_var, " as a date before passing.")
+        )}
       )
     }
   }
@@ -221,7 +272,8 @@ startup <- function(args, list){
     # Is value 0.95?
     if(list$conf_lvl != 0.95){
       rlang::inform(
-        message = c("i" = paste0(cli::style_bold("ezepi:"), " Using ", list$conf_lvl, " confidence."))
+        message = c("i" = paste0(cli::style_bold("ezepi:"),
+                                 " Using ", list$conf_lvl, " confidence."))
       )
     }
   }
@@ -296,6 +348,50 @@ startup <- function(args, list){
           cli::style_bold("Risk must be logical!"),
           "x" = paste0("risk cannot be ", list$risk, "."),
           "i" = "Set risk to TRUE or FALSE."
+        ),
+        call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # srtd
+  if(srtd){
+    # Does value exist in variable?
+    if(!(list$start_date %in% date_var) & !is.na(list$start_date)){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Value does not exist!"),
+          "x" = paste0(list$start_date, " does not exist in ", list$date_var, "."),
+          "i" = "Try adding or removing quotes."
+        ),
+        call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # endd
+  if(endd){
+    # Does value exist in variable?
+    if(!(list$end_date %in% date_var) & !is.na(list$end_date)){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Value does not exist!"),
+          "x" = paste0(list$end_date, " does not exist in ", list$date_var, "."),
+          "i" = "Try adding or removing quotes."
+        ),
+        call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # titl
+  if(titl){
+    # Is the title a string of length 1?
+    if((!is.character(list$title) | length(list$title) != 1) & !is.null(list$title)){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Title is not a string!"),
+          "i" = "Enter a different title."
         ),
         call = rlang::caller_env(1)
       )

@@ -8,6 +8,7 @@
 #' @importFrom rlang abort
 #' @importFrom tibble tibble
 #' @importFrom dplyr pull
+#' @importFrom lubridate as_date
 #' @keywords internal
 
 standardize <- function(args, list){
@@ -16,6 +17,7 @@ standardize <- function(args, list){
   evar <- "evar" %in% args
   ovar <- "ovar" %in% args
   ptim <- "ptim" %in% args
+  dvar <- "dvar" %in% args
   iexp <- "iexp" %in% args
   rexp <- "rexp" %in% args
   iout <- "iout" %in% args
@@ -48,6 +50,23 @@ standardize <- function(args, list){
 
     # Pull person_time
     if(ptim){x.df$pt <- dplyr::pull(x, list$person_time)}
+
+    # Pull and mutate date_var
+    if(dvar){
+      # if the date is a numeric variable, use unchanged
+      if(is.numeric(dplyr::pull(x, list$date_var))){
+        x.df$date <- dplyr::pull(x, list$date_var)
+      } else {
+        # otherwise, attempt date parsing
+        tryCatch(
+          {x.df$date <- lubridate::as_date(dplyr::pull(x, list$date_var))},
+          error = function(cond){
+            # if that fails, attempt numeric
+            as.numeric(x.df$date <- as.numeric(dplyr::pull(x, list$date_var)))
+          }
+        )
+      }
+    }
 
     # Mutate index exposure (to "exposed")
     if(iexp){
