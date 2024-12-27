@@ -80,8 +80,8 @@ ezcurve <- function(x,
   ) +
     ggplot2::geom_col() +
     ggplot2::labs(
-      x = paste0(match.call()[3]),
-      y = paste0(match.call()[4]),
+      x = paste0(match.call()[4]),
+      y = paste0(match.call()[3]),
       title = ifelse(
         is.null(title),
         "Epi Curve",
