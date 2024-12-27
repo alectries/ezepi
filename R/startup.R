@@ -177,8 +177,7 @@ startup <- function(args, list){
       rlang::warn(
         message = c(
           paste0(cli::style_bold("ezepi:"), " Using numeric date."),
-          "*" = paste0(list$date_var, " is numeric."),
-          "i" = paste0("Try mutating first with as.character(", list$date_var, ").")
+          "i" = paste0(list$date_var, " is numeric.")
         )
       )
     } else {
