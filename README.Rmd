@@ -23,7 +23,7 @@ Run the following commands in your R console to install ezepi:
 
 ```
 install.packages("devtools")
-devtools::install_github("alectries/ezepi@v2.1.0")
+devtools::install_github("alectries/ezepi@v2.2.0")
 ```
 
 You can update ezepi by running `devtools::update_packages()` and selecting the option for ezepi.
@@ -73,7 +73,7 @@ Most ez functions generate a tibble, which can be piped into `View()` or tidyver
 
 In contrast to ez functions, more functions are used to compare a binary outcome across multiple exposure categories. The exposure variable is assumed to be disjoint. more functions do *not* require you to specify `index_exp`, because all values of `exposure_var` other than `ref_exp` will be considered treatment groups and compared to `ref_exp`. more functions include:
 
-1. **moreprev** Generates a table with prevalences of a specified outcome.
+1. **moreprev**: Generates a table with prevalences of a specified outcome.
 2. **moretbl**: Generates a table with counts, totals, and risks (or odds) of the specified outcome according to exposure category.
 3. **moreir**: Generates a table with case counts, total person-time, and rates of the specified outcome according to exposure category.
 4. **morerd**: Generates a table with risk differences, CIs, and p-values for each exposed group compared with the unexposed group.
@@ -88,6 +88,7 @@ ezepi also includes utility functions that make certain data wrangling tasks eas
 
 1. **ezt**: An alternative to `base::t()`. Transposes tables but without as many errors and hangups.
 2. **mutate_rows**: A wrapper for `dplyr::mutate()` that transposes a table, implements typical mutate arguments, and transposes it again, which allows you to add rows to data as though they were columns.
+3. **ezcurve**: Generates a simple epi curve with ggplot. You can add additional ggplot2 functions after the ezcurve call to customize the plot.
 
 ## Development status
 
@@ -95,7 +96,7 @@ This package is now in stable condition.
 
 ### Coming changes
 
-- Create simple plots, like epi curves, directly from line-list data.
+- Mantel-Haenzel implementation.
 
 ## Legal
 

@@ -14,7 +14,7 @@ functions are wrappers of fmsb.
 Run the following commands in your R console to install ezepi:
 
     install.packages("devtools")
-    devtools::install_github("alectries/ezepi@v2.1.0")
+    devtools::install_github("alectries/ezepi@v2.2.0")
 
 You can update ezepi by running `devtools::update_packages()` and
 selecting the option for ezepi.
@@ -86,7 +86,7 @@ assumed to be disjoint. more functions do *not* require you to specify
 will be considered treatment groups and compared to `ref_exp`. more
 functions include:
 
-1.  **moreprev** Generates a table with prevalences of a specified
+1.  **moreprev**: Generates a table with prevalences of a specified
     outcome.
 2.  **moretbl**: Generates a table with counts, totals, and risks (or
     odds) of the specified outcome according to exposure category.
@@ -114,6 +114,9 @@ tasks easier.
 2.  **mutate_rows**: A wrapper for `dplyr::mutate()` that transposes a
     table, implements typical mutate arguments, and transposes it again,
     which allows you to add rows to data as though they were columns.
+3.  **ezcurve**: Generates a simple epi curve with ggplot. You can add
+    additional ggplot2 functions after the ezcurve call to customize the
+    plot.
 
 ## Development status
 
@@ -121,7 +124,7 @@ This package is now in stable condition.
 
 ### Coming changes
 
-- Create simple plots, like epi curves, directly from line-list data.
+- Mantel-Haenzel implementation.
 
 ## Legal
 

@@ -1,5 +1,11 @@
 # ezepi Changelog
 
+## ezepi 2.2.0
+
+### Added
+
+- **ezcurve.** Generate a simple but highly customizable epi curve using ggplot2.
+
 ## ezepi 2.1.0
 
 ### Added
