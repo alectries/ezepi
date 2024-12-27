@@ -4,7 +4,7 @@
 #'
 #' This function transposes the dataframe (using \code{ezt()}), passes its arguments to \code{mutate()}, then transposes it again. This means it works exactly as you would expect \code{mutate()} to work.
 #'
-#' The first column of your dataset must be a unique identifier. Add one if necessary using \code{rowid_to_column()}.
+#' The first column of your dataset must be a unique identifier, because the first column is used to name each row. Add one if necessary using \code{rowid_to_column()}.
 #'
 #' @param x A dataset.
 #' @param ... Name-value pairs and other arguments. See \code{\link[dplyr]{mutate}}.
