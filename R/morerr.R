@@ -42,9 +42,9 @@ morerr <- function(x,
     x.df,
     index = FALSE,
     risk = TRUE,
-    rate = FALSE
+    rate = FALSE,
+    print = TRUE
   )
-  print(morerr.df)
 
   # calc risk ratios and CIs to add to table
   morerr.list <- list()

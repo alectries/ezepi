@@ -44,9 +44,9 @@ ezrr <- function(x,
     x.df,
     index = TRUE,
     risk = TRUE,
-    rate = FALSE
+    rate = FALSE,
+    print = TRUE
   )
-  print(ezrr.df)
 
   # calc risk ratio from table
   sink(file = nullfile())

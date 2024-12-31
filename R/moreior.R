@@ -42,9 +42,9 @@ moreior <- function(x,
     x.df,
     index = FALSE,
     risk = FALSE,
-    rate = FALSE
+    rate = FALSE,
+    print = TRUE
   )
-  print(moreior.df)
 
   # calc odds ratios and CIs to add to table
   moreior.list <- list()

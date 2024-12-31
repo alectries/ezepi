@@ -6,6 +6,7 @@
 #' @param index If TRUE, exp is "exposed" or "unexposed". If FALSE, exp could have multiple indexes.
 #' @param risk If TRUE, add a risk column. If FALSE, add an odds column. If NA, add prevalence or nothing.
 #' @param rate If TRUE, generate a rate table. If FALSE, don't.
+#' @param print Default is FALSE. If TRUE, prints the table to the console.
 #' @importFrom magrittr `%>%`
 #' @importFrom dplyr filter
 #' @importFrom dplyr group_by
@@ -22,7 +23,7 @@
 #' @importFrom tidyselect where
 #' @keywords internal
 
-table <- function(x.df, index, risk, rate){
+table <- function(x.df, index, risk, rate, print = FALSE){
   # setup
   `%>%` <- magrittr::`%>%`
 
@@ -37,6 +38,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(prevalence = case / total) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -51,6 +53,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::select(-total, -n) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -77,6 +80,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(rate = case / pt) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -103,6 +107,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(rate = case / pt) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -118,6 +123,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(risk = case / total) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -133,6 +139,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(risk = case / total) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -148,6 +155,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(odds = case / control) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 
@@ -163,6 +171,7 @@ table <- function(x.df, index, risk, rate){
       dplyr::mutate(odds = case / control) %>%
       dplyr::ungroup()
 
+    if(print){print(table.df)}
     return(table.df)
   }
 

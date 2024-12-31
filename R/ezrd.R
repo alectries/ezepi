@@ -43,9 +43,9 @@ ezrd <- function(x,
     x.df,
     index = TRUE,
     risk = TRUE,
-    rate = FALSE
+    rate = FALSE,
+    print = TRUE
   )
-  print(ezrd.df)
 
   # calc risk difference from table
   sink(file = nullfile())

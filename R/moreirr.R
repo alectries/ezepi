@@ -44,9 +44,9 @@ moreirr <- function(x,
     x.df,
     index = FALSE,
     risk = NA,
-    rate = TRUE
+    rate = TRUE,
+    print = TRUE
   )
-  print(moreirr.df)
 
   # calc rate ratios and CIs to add to table
   moreirr.list <- list()

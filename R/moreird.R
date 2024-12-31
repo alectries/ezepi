@@ -44,9 +44,9 @@ moreird <- function(x,
     x.df,
     index = FALSE,
     risk = NA,
-    rate = TRUE
+    rate = TRUE,
+    print = TRUE
   )
-  print(moreird.df)
 
   # calc rate diffs and CIs to add to table
   moreird.list <- list()

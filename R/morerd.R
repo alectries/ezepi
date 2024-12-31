@@ -42,9 +42,9 @@ morerd <- function(x,
     x.df,
     index = FALSE,
     risk = TRUE,
-    rate = FALSE
+    rate = FALSE,
+    print = TRUE
   )
-  print(morerd.df)
 
   # calc risk differences and CIs to add to table
   morerd.list <- list()
