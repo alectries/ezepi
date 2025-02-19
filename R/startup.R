@@ -48,7 +48,8 @@ startup <- function(args, list){
       error = function(cond){rlang::abort(
         message = c(
           cli::style_bold("x does not exist!"),
-          "i" = "Did you forget to specify a dataset?"
+          "i" = "Did you forget to specify a dataset?",
+          "x" = paste0(cond)
         ),
         call = rlang::caller_env(5)
       )}
