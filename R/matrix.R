@@ -12,7 +12,7 @@
 #' @importFrom dplyr bind_rows
 #' @keywords internal
 
-matrix <- function(x.df, strat_var, index, risk, rate){
+matrix <- function(x.df, index, risk, rate){
   # setup
   `%>%` <- magrittr::`%>%`
 
