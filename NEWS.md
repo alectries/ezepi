@@ -1,5 +1,15 @@
 # ezepi Changelog
 
+## ezepi 2.3.0
+
+### Added
+
+- **mh functions.** Mantel-Haenszel implementation.
+
+### Changed
+
+- Moved table printing to table helper function and added print argument.
+
 ## ezepi 2.2.0
 
 ### Added
