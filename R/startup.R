@@ -19,6 +19,7 @@ startup <- function(args, list){
   xdat <- "xdat" %in% args
   evar <- "evar" %in% args
   ovar <- "ovar" %in% args
+  svar <- "svar" %in% args
   ptim <- "ptim" %in% args
   dvar <- "dvar" %in% args
   iexp <- "iexp" %in% args
@@ -107,6 +108,30 @@ startup <- function(args, list){
             "."
           ),
           "i" = "Did you forget to specify outcome_var?"
+        ),
+        call = rlang::caller_env(5)
+      )}
+    )
+  }
+
+  # svar
+  if(svar){
+    # Does variable exist? If yes, pull
+    tryCatch(
+      {strat_var <- dplyr::pull(x, list$strat_var)},
+      ## fail if pull fails
+      error = function(cond){rlang::abort(
+        message = c(
+          cli::style_bold("Variable does not exist!"),
+          "x" = paste0(
+            ifelse(paste0(list$strat_var) == "",
+                   "strat_var",
+                   paste0(list$strat_var)),
+            " does not exist in ",
+            list$x,
+            "."
+          ),
+          "i" = "Did you forget to specify strat_var?"
         ),
         call = rlang::caller_env(5)
       )}

@@ -16,6 +16,7 @@ standardize <- function(args, list){
   xdat <- "xdat" %in% args
   evar <- "evar" %in% args
   ovar <- "ovar" %in% args
+  svar <- "svar" %in% args
   ptim <- "ptim" %in% args
   dvar <- "dvar" %in% args
   iexp <- "iexp" %in% args
@@ -47,6 +48,9 @@ standardize <- function(args, list){
 
     # Pull outcome_var
     if(ovar){x.df$out <- paste0(dplyr::pull(x, list$outcome_var))}
+
+    # Pull strat_var
+    if(svar){x.df$strat <- paste0(dplyr::pull(x, list$strat_var))}
 
     # Pull person_time
     if(ptim){x.df$pt <- dplyr::pull(x, list$person_time)}
