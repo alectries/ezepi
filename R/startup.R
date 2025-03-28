@@ -203,8 +203,7 @@ startup <- function(args, list){
     if(is.numeric(date_var)){
       rlang::warn(
         message = c(
-          paste0(cli::style_bold("ezepi:"), " Using numeric date."),
-          "i" = paste0(list$date_var, " is numeric.")
+          paste0(cli::style_bold("ezepi:"), " Using numeric date.")
         )
       )
     } else {
@@ -215,7 +214,7 @@ startup <- function(args, list){
         error = function(cond){rlang::abort(
           cli::style_bold("Date parser failed!"),
           "x" = paste0(cond),
-          "i" = paste0("Try manually converting ", list$date_var, " as a date before passing.")
+          "i" = paste0("Try manually converting ", list$date_var, " to a date before passing.")
         )}
       )
     }
