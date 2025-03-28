@@ -27,6 +27,7 @@ startup <- function(args, list){
   iout <- "iout" %in% args
   rout <- "rout" %in% args
   clvl <- "clvl" %in% args
+  prnt <- "prnt" %in% args
   rwnm <- "rwnm" %in% args
   numd <- "numd" %in% args
   risk <- "risk" %in% args
@@ -299,6 +300,20 @@ startup <- function(args, list){
       rlang::inform(
         message = c("i" = paste0(cli::style_bold("ezepi:"),
                                  " Using ", list$conf_lvl, " confidence."))
+      )
+    }
+  }
+
+  # prnt
+  if(prnt){
+    if(!is.logical(list$print)){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Print option must be logical!"),
+          "x" = paste0(list$print, " is not logical."),
+          "i" = paste0("Use TRUE or FALSE.")
+        ),
+        call = rlang::caller_env(1)
       )
     }
   }

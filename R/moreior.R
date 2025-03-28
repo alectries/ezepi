@@ -11,6 +11,7 @@
 #' @param index_out The value of outcome_var to treat as cases. Defaults to 1.
 #' @param ref_out The value of outcome_var to treat as non-cases. Defaults to 0.
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
+#' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
 #' @importFrom fmsb oddsratio
@@ -23,7 +24,8 @@ moreior <- function(x,
                    ref_exp = 0,
                    index_out = 1,
                    ref_out = 0,
-                   conf_lvl = 0.95
+                   conf_lvl = 0.95,
+                   print = TRUE
 ){
   # startup
   ezepi:::startup(
@@ -43,7 +45,7 @@ moreior <- function(x,
     index = FALSE,
     risk = FALSE,
     rate = FALSE,
-    print = TRUE
+    print = print
   )
 
   # calc odds ratios and CIs to add to table
