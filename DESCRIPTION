@@ -1,7 +1,7 @@
 Package: ezepi
 Type: Package
 Title: Simple Functions for Epidemiology
-Version: 2.3.0
+Version: 2.4.0
 Authors@R: person(given = "Alec",
                   family = "Higgins",
                   role = c("aut", "cre", "cph"),

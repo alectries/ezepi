@@ -1,5 +1,15 @@
 # ezepi Changelog
 
+## ezepi 2.4.0
+
+### Added
+
+- **print option.** Added option to silence counts table in console to association measure commands.
+
+### Changed
+
+- Changed numeric date warning message.
+
 ## ezepi 2.3.0
 
 ### Added
