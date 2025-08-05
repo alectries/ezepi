@@ -2,7 +2,7 @@
 #'
 #' Returns a ggplot2 ggplot object that, when displayed, is a bar chart of outcomes by their date of occurence.
 #'
-#' You can follow the ezcurve call with further ggplot2 calls to customize the graph.
+#' You can follow the ezcurve call with further ggplot2 calls to customize the graph. To change color and fill, use `geom_col(...)`.
 #'
 #' @param x A dataset.
 #' @param outcome_var A categorical outcome variable in x.
@@ -78,7 +78,7 @@ ezcurve <- function(x,
     ezcurve.df,
     ggplot2::aes(x = date, y = n)
   ) +
-    ggplot2::geom_col() +
+    ggplot2::geom_col(width = 0.9) +
     ggplot2::labs(
       x = paste0(match.call()[4]),
       y = paste0(match.call()[3]),

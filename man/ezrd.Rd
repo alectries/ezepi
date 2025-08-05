@@ -12,7 +12,8 @@ ezrd(
   ref_exp = 0,
   index_out = 1,
   ref_out = 0,
-  conf_lvl = 0.95
+  conf_lvl = 0.95,
+  print = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ ezrd(
 \item{ref_out}{The value of outcome_var to treat as non-cases. Defaults to 0.}
 
 \item{conf_lvl}{The preferred confidence level for hypothesis testing. Defaults to 0.95.}
+
+\item{print}{Whether to print a counts table to the console. Defaults to TRUE.}
 }
 \value{
 A tibble.

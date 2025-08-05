@@ -36,5 +36,5 @@ A ggplot2 object.
 Returns a ggplot2 ggplot object that, when displayed, is a bar chart of outcomes by their date of occurence.
 }
 \details{
-You can follow the ezcurve call with further ggplot2 calls to customize the graph.
+You can follow the ezcurve call with further ggplot2 calls to customize the graph. To change color and fill, use `geom_col(...)`.
 }
