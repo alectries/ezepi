@@ -1,5 +1,11 @@
 # ezepi Changelog
 
+## ezepi 2.4.1
+
+### Changed
+
+- Fixed bar width of epi curves.
+
 ## ezepi 2.4.0
 
 ### Added
