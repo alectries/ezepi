@@ -11,7 +11,10 @@ ezcurve(
   index_out = 1,
   start_date = NA,
   end_date = NA,
-  title = NULL
+  title = NULL,
+  color = "black",
+  fill = "gray",
+  width = 0.9
 )
 }
 \arguments{
@@ -28,6 +31,12 @@ ezcurve(
 \item{end_date}{The date on which to end the graph. Defaults to NA, which will automatically set the end date.}
 
 \item{title}{The plot title. Defaults to NULL.}
+
+\item{color}{The color of the bar borders. Defaults to black.}
+
+\item{fill}{The color of the bar interior. Defaults to gray.}
+
+\item{width}{The width of the bars. Defaults to 0.9.}
 }
 \value{
 A ggplot2 object.

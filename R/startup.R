@@ -34,6 +34,9 @@ startup <- function(args, list){
   srtd <- "srtd" %in% args
   endd <- "endd" %in% args
   titl <- "titl" %in% args
+  colr <- "colr" %in% args
+  fill <- "fill" %in% args
+  widt <- "widt" %in% args
 
   # xdat
   if(xdat){
@@ -433,6 +436,56 @@ startup <- function(args, list){
           "i" = "Enter a different title."
         ),
         call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # colr
+  if(colr){
+    # Is the color a string of length 1?
+    if(!is.character(list$color) | length(list$color) != 1){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Color is not a string!"),
+          "i" = "Enter a different color."
+        ),
+        call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # fill
+  if(fill){
+    # Is the fill a string of length 1?
+    if(!is.character(list$fill) | length(list$fill) != 1){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Fill is not a string!"),
+          "i" = "Enter a different fill."
+        ),
+        call = rlang::caller_env(1)
+      )
+    }
+  }
+
+  # widt
+  if(widt){
+    # Is the width a number?
+    if(!is.numeric(list$width)){
+      rlang::abort(
+        message = c(
+          cli::style_bold("Width is not a number!"),
+          "i" = "Enter a number for bar width."
+        ),
+        call = rlang::caller_env(1)
+      )
+    }
+
+    # Is the width 0.9?
+    if(list$width != 0.9){
+      rlang::inform(
+        message = c("i" = paste0(cli::style_bold("ezepi:"),
+                                 " Using ", list$width, " bar width."))
       )
     }
   }

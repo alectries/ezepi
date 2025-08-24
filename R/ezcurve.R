@@ -11,6 +11,9 @@
 #' @param start_date The date on which to start the graph. Defaults to NA, which will automatically set the start date.
 #' @param end_date The date on which to end the graph. Defaults to NA, which will automatically set the end date.
 #' @param title The plot title. Defaults to NULL.
+#' @param color The color of the bar borders. Defaults to black.
+#' @param fill The color of the bar interior. Defaults to gray.
+#' @param width The width of the bars. Defaults to 0.9.
 #' @return A ggplot2 object.
 #' @importFrom utils modifyList
 #' @importFrom magrittr `%>%`
@@ -33,12 +36,15 @@ ezcurve <- function(x,
                     index_out = 1,
                     start_date = NA,
                     end_date = NA,
-                    title = NULL
+                    title = NULL,
+                    color = "black",
+                    fill = "gray",
+                    width = 0.9
 ){
   # startup
   `%>%` <- magrittr::`%>%`
   ezepi:::startup(
-    c("xdat", "ovar", "dvar", "iout", "srtd", "endd", "titl"),
+    c("xdat", "ovar", "dvar", "iout", "srtd", "endd", "titl", "colr", "fill", "widt"),
     utils::modifyList(formals(ezepi::ezcurve), as.list(match.call()[-1]))
   )
 
@@ -78,7 +84,11 @@ ezcurve <- function(x,
     ezcurve.df,
     ggplot2::aes(x = date, y = n)
   ) +
-    ggplot2::geom_col(width = 0.9) +
+    ggplot2::geom_col(
+      color = color,
+      fill = fill,
+      width = width
+    ) +
     ggplot2::labs(
       x = paste0(match.call()[4]),
       y = paste0(match.call()[3]),

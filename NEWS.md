@@ -1,5 +1,11 @@
 # ezepi Changelog
 
+## ezepi 2.4.2
+
+### Changed
+
+- Added options for bar color, fill, and width to ezcurve call.
+
 ## ezepi 2.4.1
 
 ### Changed
