@@ -16,7 +16,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb riskratio
 #' @importFrom tibble tibble
 #' @export
 ezrr <- function(x,
@@ -51,22 +50,21 @@ ezrr <- function(x,
   )
 
   # calc risk ratio from table
-  sink(file = nullfile())
-  ezrr.fmsb <- fmsb::riskratio(
+  ezrr.calc <- ezepi::calc(
+    "rr",
     ezrr.df[ezrr.df$exp == 'exposed', 'case'][[1]],
+    ezrr.df[ezrr.df$exp == 'exposed', 'control'][[1]],
     ezrr.df[ezrr.df$exp == 'unexposed', 'case'][[1]],
-    ezrr.df[ezrr.df$exp == 'exposed', 'total'][[1]],
-    ezrr.df[ezrr.df$exp == 'unexposed', 'total'][[1]],
-    conf.level = conf_lvl
+    ezrr.df[ezrr.df$exp == 'unexposed', 'control'][[1]],
+    conf_lvl = conf_lvl
   )
-  sink()
 
   # pull numbers from fmsb for tibble
   ezrr.res <- tibble::tibble_row(
-    "Risk Ratio" = as.numeric(ezrr.fmsb$estimate),
-    "LCI" = as.numeric(ezrr.fmsb$conf.int[1]),
-    "UCI" = as.numeric(ezrr.fmsb$conf.int[2]),
-    "p-value" = as.numeric(ezrr.fmsb$p.value)
+    "rr" = as.numeric(ezrr.calc[1]),
+    "lci" = as.numeric(ezrr.calc[2]),
+    "uci" = as.numeric(ezrr.calc[3]),
+    "p" = as.numeric(ezrr.calc[4])
   )
 
   return(ezrr.res)

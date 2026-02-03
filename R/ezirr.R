@@ -17,7 +17,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb rateratio
 #' @importFrom tibble tibble
 #' @export
 ezirr <- function(x,
@@ -54,22 +53,21 @@ ezirr <- function(x,
   print(ezirr.df)
 
   # calc rate ratio from table
-  sink(file = nullfile())
-  ezirr.fmsb <- fmsb::rateratio(
+  ezirr.calc <- ezepi::calc(
+    "irr",
     ezirr.df[ezirr.df$exp == 'exposed', 'case'][[1]],
-    ezirr.df[ezirr.df$exp == 'unexposed', 'case'][[1]],
     ezirr.df[ezirr.df$exp == 'exposed', 'pt'][[1]],
+    ezirr.df[ezirr.df$exp == 'unexposed', 'case'][[1]],
     ezirr.df[ezirr.df$exp == 'unexposed', 'pt'][[1]],
-    conf.level = conf_lvl
+    conf_lvl = conf_lvl
   )
-  sink()
 
-  # pull numbers from fmsb for tibble
+  # pull numbers from calc for tibble
   ezirr.res <- tibble::tibble(
-    "Rate Ratio" = as.numeric(ezirr.fmsb$estimate),
-    "LCI" = as.numeric(ezirr.fmsb$conf.int[1]),
-    "UCI" = as.numeric(ezirr.fmsb$conf.int[2]),
-    "p-value" = as.numeric(ezirr.fmsb$p.value)
+    "irr" = as.numeric(ezirr.calc[1]),
+    "lci" = as.numeric(ezirr.calc[2]),
+    "uci" = as.numeric(ezirr.calc[3]),
+    "p" = as.numeric(ezirr.calc[4])
   )
 
   return(ezirr.res)

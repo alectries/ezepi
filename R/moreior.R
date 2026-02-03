@@ -14,7 +14,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb oddsratio
 #' @importFrom tibble tibble_row
 #' @importFrom dplyr bind_rows
 #' @export
@@ -52,23 +51,22 @@ moreior <- function(x,
   moreior.list <- list()
   for(i in 1:nrow(moreior.df)){
     # calc odds ratio
-    sink(file = nullfile())
-    moreior.fmsb <- fmsb::oddsratio(
+    moreior.calc <- ezepi::calc(
+      "ior",
       moreior.df[i, 'case'][[1]],
-      moreior.df[moreior.df$exp == 'unexposed', 'case'][[1]],
       moreior.df[i, 'control'][[1]],
+      moreior.df[moreior.df$exp == 'unexposed', 'case'][[1]],
       moreior.df[moreior.df$exp == 'unexposed', 'control'][[1]],
-      conf.level = conf_lvl
+      conf_lvl = conf_lvl
     )
-    sink()
 
     # add row to list
     moreior.list[[i]] <- tibble::tibble_row(
-      "Exposure" = moreior.df$exp[[i]],
-      "Odds Ratio" = as.numeric(moreior.fmsb$estimate),
-      "LCI" = as.numeric(moreior.fmsb$conf.int[1]),
-      "UCI" = as.numeric(moreior.fmsb$conf.int[2]),
-      "p-value" = as.numeric(moreior.fmsb$p.value)
+      "exposure" = moreior.df$exp[[i]],
+      "ior" = as.numeric(moreior.calc[1]),
+      "lci" = as.numeric(moreior.calc[2]),
+      "uci" = as.numeric(moreior.calc[3]),
+      "p" = as.numeric(moreior.calc[4])
     )
   }
 

@@ -14,7 +14,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb riskdifference
 #' @importFrom tibble tibble_row
 #' @importFrom dplyr bind_rows
 #' @export
@@ -52,23 +51,22 @@ morerd <- function(x,
   morerd.list <- list()
   for(i in 1:nrow(morerd.df)){
     # calc risk diff
-    sink(file = nullfile())
-    morerd.fmsb <- fmsb::riskdifference(
+    morerd.calc <- ezepi::calc(
+      "rd",
       morerd.df[i, 'case'][[1]],
+      morerd.df[i, 'control'][[1]],
       morerd.df[morerd.df$exp == 'unexposed', 'case'][[1]],
-      morerd.df[i, 'total'][[1]],
-      morerd.df[morerd.df$exp == 'unexposed', 'total'][[1]],
-      conf.level = conf_lvl
+      morerd.df[morerd.df$exp == 'unexposed', 'control'][[1]],
+      conf_lvl = conf_lvl
     )
-    sink()
 
     # add row to list
     morerd.list[[i]] <- tibble::tibble_row(
-      "Exposure" = morerd.df$exp[[i]],
-      "Risk Difference" = as.numeric(morerd.fmsb$estimate),
-      "LCI" = as.numeric(morerd.fmsb$conf.int[1]),
-      "UCI" = as.numeric(morerd.fmsb$conf.int[2]),
-      "p-value" = as.numeric(morerd.fmsb$p.value)
+      "exposure" = morerd.df$exp[[i]],
+      "rd" = as.numeric(morerd.calc[1]),
+      "lci" = as.numeric(morerd.calc[2]),
+      "uci" = as.numeric(morerd.calc[3]),
+      "p" = as.numeric(morerd.calc[4])
     )
   }
 

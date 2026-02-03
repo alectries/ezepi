@@ -15,7 +15,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb riskdifference
 #' @importFrom tibble tibble
 #' @export
 ezrd <- function(x,
@@ -50,22 +49,21 @@ ezrd <- function(x,
   )
 
   # calc risk difference from table
-  sink(file = nullfile())
-  ezrd.fmsb <- fmsb::riskdifference(
+  ezrd.calc <- ezepi::calc(
+    "rd",
     ezrd.df[ezrd.df$exp == 'exposed', 'case'][[1]],
+    ezrd.df[ezrd.df$exp == 'exposed', 'control'][[1]],
     ezrd.df[ezrd.df$exp == 'unexposed', 'case'][[1]],
-    ezrd.df[ezrd.df$exp == 'exposed', 'total'][[1]],
-    ezrd.df[ezrd.df$exp == 'unexposed', 'total'][[1]],
-    conf.level = conf_lvl
+    ezrd.df[ezrd.df$exp == 'unexposed', 'control'][[1]],
+    conf_lvl = conf_lvl
   )
-  sink()
 
-  # pull numbers from fmsb for tibble
+  # pull numbers from calc for tibble
   ezrd.res <- tibble::tibble(
-    "Risk Difference" = as.numeric(ezrd.fmsb$estimate),
-    "LCI" = as.numeric(ezrd.fmsb$conf.int[1]),
-    "UCI" = as.numeric(ezrd.fmsb$conf.int[2]),
-    "p-value" = as.numeric(ezrd.fmsb$p.value)
+    "rd" = as.numeric(ezrd.calc[1]),
+    "lci" = as.numeric(ezrd.calc[2]),
+    "uci" = as.numeric(ezrd.calc[3]),
+    "p" = as.numeric(ezrd.calc[4])
   )
 
   return(ezrd.res)

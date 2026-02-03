@@ -15,7 +15,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb rateratio
 #' @importFrom tibble tibble_row
 #' @importFrom dplyr bind_rows
 #' @export
@@ -54,23 +53,22 @@ moreirr <- function(x,
   moreirr.list <- list()
   for(i in 1:nrow(moreirr.df)){
     # calc rate ratio
-    sink(file = nullfile())
-    moreirr.fmsb <- fmsb::rateratio(
+    moreirr.calc <- ezepi::calc(
+      "irr",
       moreirr.df[i, 'case'][[1]],
-      moreirr.df[moreirr.df$exp == 'unexposed', 'case'][[1]],
       moreirr.df[i, 'pt'][[1]],
+      moreirr.df[moreirr.df$exp == 'unexposed', 'case'][[1]],
       moreirr.df[moreirr.df$exp == 'unexposed', 'pt'][[1]],
-      conf.level = conf_lvl
+      conf_lvl = conf_lvl
     )
-    sink()
 
     # add row to list
     moreirr.list[[i]] <- tibble::tibble_row(
-      "Exposure" = moreirr.df$exp[[i]],
-      "Rate Ratio" = as.numeric(moreirr.fmsb$estimate),
-      "LCI" = as.numeric(moreirr.fmsb$conf.int[1]),
-      "UCI" = as.numeric(moreirr.fmsb$conf.int[2]),
-      "p-value" = as.numeric(moreirr.fmsb$p.value)
+      "exposure" = moreirr.df$exp[[i]],
+      "irr" = as.numeric(moreirr.calc[1]),
+      "lci" = as.numeric(moreirr.calc[2]),
+      "uci" = as.numeric(moreirr.calc[3]),
+      "p" = as.numeric(moreirr.calc[4])
     )
   }
 

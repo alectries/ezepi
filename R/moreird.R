@@ -15,7 +15,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb ratedifference
 #' @importFrom tibble tibble_row
 #' @importFrom dplyr bind_rows
 #' @export
@@ -54,24 +53,22 @@ moreird <- function(x,
   moreird.list <- list()
   for(i in 1:nrow(moreird.df)){
     # calc rate diff
-    sink(file = nullfile())
-    moreird.fmsb <- fmsb::ratedifference(
+    moreird.calc <- ezepi::calc(
+      "ird",
       moreird.df[i, 'case'][[1]],
-      moreird.df[moreird.df$exp == 'unexposed', 'case'][[1]],
       moreird.df[i, 'pt'][[1]],
+      moreird.df[moreird.df$exp == 'unexposed', 'case'][[1]],
       moreird.df[moreird.df$exp == 'unexposed', 'pt'][[1]],
-      CRC = TRUE,
-      conf.level = conf_lvl
+      conf_lvl = conf_lvl
     )
-    sink()
 
     # add row to list
     moreird.list[[i]] <- tibble::tibble_row(
-      "Exposure" = moreird.df$exp[[i]],
-      "Rate Difference" = as.numeric(moreird.fmsb$estimate),
-      "LCI" = as.numeric(moreird.fmsb$conf.int[1]),
-      "UCI" = as.numeric(moreird.fmsb$conf.int[2]),
-      "p-value" = as.numeric(moreird.fmsb$p.value)
+      "exposure" = moreird.df$exp[[i]],
+      "ird" = as.numeric(moreird.calc[1]),
+      "lci" = as.numeric(moreird.calc[2]),
+      "uci" = as.numeric(moreird.calc[3]),
+      "p" = as.numeric(moreird.calc[4])
     )
   }
 

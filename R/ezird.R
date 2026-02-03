@@ -17,7 +17,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb ratedifference
 #' @importFrom tibble tibble
 #' @export
 ezird <- function(x,
@@ -54,23 +53,21 @@ ezird <- function(x,
   print(ezird.df)
 
   # calc rate diff from table
-  sink(file = nullfile())
-  ezird.fmsb <- fmsb::ratedifference(
+  ezird.calc <- ezepi::calc(
+    "ird",
     ezird.df[ezird.df$exp == 'exposed', 'case'][[1]],
-    ezird.df[ezird.df$exp == 'unexposed', 'case'][[1]],
     ezird.df[ezird.df$exp == 'exposed', 'pt'][[1]],
+    ezird.df[ezird.df$exp == 'unexposed', 'case'][[1]],
     ezird.df[ezird.df$exp == 'unexposed', 'pt'][[1]],
-    CRC = TRUE,
-    conf.level = conf_lvl
+    conf_lvl = conf_lvl
   )
-  sink()
 
-  # pull numbers from fmsb for tibble
+  # pull numbers from calc for tibble
   ezird.res <- tibble::tibble(
-    "Rate Difference" = as.numeric(ezird.fmsb$estimate),
-    "LCI" = as.numeric(ezird.fmsb$conf.int[1]),
-    "UCI" = as.numeric(ezird.fmsb$conf.int[2]),
-    "p-value" = as.numeric(ezird.fmsb$p.value)
+    "ird" = as.numeric(ezird.calc[1]),
+    "lci" = as.numeric(ezird.calc[2]),
+    "uci" = as.numeric(ezird.calc[3]),
+    "p" = as.numeric(ezird.calc[4])
   )
 
   return(ezird.res)

@@ -14,7 +14,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb riskratio
 #' @importFrom tibble tibble_row
 #' @importFrom dplyr bind_rows
 #' @export
@@ -52,23 +51,21 @@ morerr <- function(x,
   morerr.list <- list()
   for(i in 1:nrow(morerr.df)){
     # calc risk ratio
-    sink(file = nullfile())
-    morerr.fmsb <- fmsb::riskratio(
+    morerr.calc <- ezepi::calc(
+      "rr",
       morerr.df[i, 'case'][[1]],
+      morerr.df[i, 'control'][[1]],
       morerr.df[morerr.df$exp == 'unexposed', 'case'][[1]],
-      morerr.df[i, 'total'][[1]],
-      morerr.df[morerr.df$exp == 'unexposed', 'total'][[1]],
-      conf.level = conf_lvl
+      morerr.df[morerr.df$exp == 'unexposed', 'control'][[1]],
     )
-    sink()
 
     # add row to list
     morerr.list[[i]] <- tibble::tibble_row(
-      "Exposure" = morerr.df$exp[[i]],
-      "Risk Ratio" = as.numeric(morerr.fmsb$estimate),
-      "LCI" = as.numeric(morerr.fmsb$conf.int[1]),
-      "UCI" = as.numeric(morerr.fmsb$conf.int[2]),
-      "p-value" = as.numeric(morerr.fmsb$p.value)
+      "exposure" = morerr.df$exp[[i]],
+      "rr" = as.numeric(morerr.calc[1]),
+      "lci" = as.numeric(morerr.calc[2]),
+      "uci" = as.numeric(morerr.calc[3]),
+      "p" = as.numeric(morerr.calc[4])
     )
   }
 

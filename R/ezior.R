@@ -16,7 +16,6 @@
 #' @param print Whether to print a counts table to the console. Defaults to TRUE.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb oddsratio
 #' @importFrom tibble tibble
 #' @export
 ezior <- function(x,
@@ -51,22 +50,21 @@ ezior <- function(x,
   )
 
   # calc odds ratio from table
-  sink(file = nullfile())
-  ezior.fmsb <- fmsb::oddsratio(
+  ezior.calc <- ezepi::calc(
+    "ior",
     ezior.df[ezior.df$exp == 'exposed', 'case'][[1]],
-    ezior.df[ezior.df$exp == 'unexposed', 'case'][[1]],
     ezior.df[ezior.df$exp == 'exposed', 'control'][[1]],
+    ezior.df[ezior.df$exp == 'unexposed', 'case'][[1]],
     ezior.df[ezior.df$exp == 'unexposed', 'control'][[1]],
-    conf.level = conf_lvl
+    conf_lvl = conf_lvl
   )
-  sink()
 
-  # pull numbers from fmsb for tibble
+  # pull numbers from calc for tibble
   ezior.res <- tibble::tibble(
-    "Odds Ratio" = as.numeric(ezior.fmsb$estimate),
-    "LCI" = as.numeric(ezior.fmsb$conf.int[1]),
-    "UCI" = as.numeric(ezior.fmsb$conf.int[2]),
-    "p-value" = as.numeric(ezior.fmsb$p.value)
+    "ior" = as.numeric(ezior.calc[1]),
+    "lci" = as.numeric(ezior.calc[2]),
+    "uci" = as.numeric(ezior.calc[3]),
+    "p" = as.numeric(ezior.calc[4])
   )
 
   return(ezior.res)
