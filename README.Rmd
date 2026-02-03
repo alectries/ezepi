@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # ezepi
 
-ezepi (short for Easy Epidemiology) is a package that simplifies the calculation of common epidemiological measures of occurrence and association from pre-existing datasets, allowing you to get various epi measures from line-list data without wrangling it first. Most ezepi functions are wrappers of fmsb.
+ezepi (short for Easy Epidemiology) is a package that simplifies the calculation of common epidemiological measures of occurrence and association from pre-existing datasets, allowing you to get various epi measures from line-list data without wrangling it first.
 
 # How to Install
 
@@ -69,6 +69,8 @@ ez functions are used when comparing a binary outcome across a single exposed (o
 
 Most ez functions generate a tibble, which can be piped into `View()` or tidyverse functions to extract needed data.
 
+Before version 2.5.0, most ez functions were wrappers of corresponding fmsb functions. From v2.5.0 on, they depend on ezepi::calc.
+
 ### more functions
 
 In contrast to ez functions, more functions are used to compare a binary outcome across multiple exposure categories. The exposure variable is assumed to be disjoint. more functions do *not* require you to specify `index_exp`, because all values of `exposure_var` other than `ref_exp` will be considered treatment groups and compared to `ref_exp`. more functions include:
@@ -82,6 +84,8 @@ In contrast to ez functions, more functions are used to compare a binary outcome
 7. **moreird**: Generates a table with incidence rate differences, CIs, and p-values for each exposed group compared with the unexposed group.
 8. **moreirr**: Generates a table with incidence rate ratios, CIs, and p-values for each exposed group compared with the unexposed group.
 
+Before version 2.5.0, most more functions were wrappers of corresponding fmsb functions. From v2.5.0 on, they depend on ezepi::calc.
+
 ### mh functions
 
 Like ez functions, mh functions compare a binary outcome across a binary exposed variable. However, it uses a third stratification variable to perform Mantel-Haenszel pooling. mh functions include:
@@ -89,6 +93,21 @@ Like ez functions, mh functions compare a binary outcome across a binary exposed
 1. **mhrd**: Generates a table with an estimate and CI for a Mantel-Haenszel risk difference.
 2. **mhrr**: Generates a table with an estimate and CI for a Mantel-Haenszel risk ratio.
 3. **mhior**: Generates a table with an estimate and CI for a Mantel-Haenszel incidence odds ratio.
+
+For now, mh functions wrap the corresponding fmsb functions. In the future, they will depend on ezepi::calc.
+
+### calc
+
+Most of the above functions depend on ezepi's core calculation function: **calc**. calc generates a named vector with four components:
+
+- [1] **estimate**: The estimate of the measure of association specified as `calc`, calc's first argument.
+- [2] **lci**: The lower bound of the confidence interval at a confidence level set by `conf_lvl` (default 95%).
+- [3] **uci**: The upper bound of the confidence interval at a confidence level set by `conf_lvl` (default 95%).
+- [4] **p**: The p-value for the Wald chi-square test performed at a confidence level set by `conf_lvl` (default 95%).
+
+calc accepts a 2x2 contingency table passed as four separate numbers, a 2x2 dataframe (or similar), or a 2x2 matrix. calc assumes (and cannot check!) that you have your exposed cases in the top left corner (`a`), your exposed controls in the top right corner (`b`), your unexposed cases in the bottom left corner (`c`), and your unexposed controls in the bottom right corner (`d`). For rates, calc assumes you have replaced your control counts with person-time sums.
+
+When `n` and `sumdiff` are passed to calc, it produces a weighted estimate of the measure of association, with the standard error multiplied by the design effect (Kish, 1965) to simplify the computation.
 
 ### Utility functions
 
@@ -104,10 +123,11 @@ This package is now in stable condition.
 
 ### Coming changes
 
-- Mantel-Haenzel implementation.
+- Mantel-Haenszel support in calc and the full removal of fmsb dependency.
+- Weighted estimation using ez and more functions.
 
 ## Legal
 
-Copyright © 2024 Alec Higgins
+Copyright © 2026 Alec Higgins
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

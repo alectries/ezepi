@@ -1,5 +1,15 @@
 # ezepi Changelog
 
+## ezepi 2.5.0
+
+### Added
+
+- **calc**: Added calc function to calculate risk difference, risk ratio, odds ratio, incidence rate difference, and incidence rate ratio natively with CI and p-value.
+
+### Changed
+
+- Removed fmsb function calls from ez and more functions, changing their dependency to new calc function.
+
 ## ezepi 2.4.2
 
 ### Changed
