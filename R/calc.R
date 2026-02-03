@@ -30,12 +30,6 @@ calc <- function(calc,
                  sumdiff = NA,
                  conf_lvl = 0.95
 ){
-  # startup
-  ezepi:::startup(
-    c("clvl"),
-    utils::modifyList(formals(ezepi::calc), as.list(match.call()[-1]))
-  )
-
   # test that calc is possible
   if(!(calc %in% c("ior", "ird", "irr", "rd", "rr"))){
     rlang::abort(message = c(
@@ -96,10 +90,8 @@ calc <- function(calc,
   }
 
   # calculate design effect if sumdiff exists
-  deff <- 1 + sqrt(
-    sumdiff / n /
-      ((sum(calc.df$case) + sum(calc.df$control)) / n)
-  )^2
+  deff <- 1 + (1/n) * sumdiff /
+    ((sum(calc.df$case) + sum(calc.df$control)) / n)^2
 
   # calculate result
   if(calc == "ior"){
