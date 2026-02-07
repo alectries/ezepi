@@ -7,7 +7,7 @@
 calc(calc, a, b = NA, c = NA, d = NA, n = NA, sumdiff = NA, conf_lvl = 0.95)
 }
 \arguments{
-\item{calc}{The measure to be calculated. Choose from prevalence ("prev"), risk difference ("rd"), risk ratio ("rr"), incidence odds ratio ("ior"), incidence rate difference ("ird"), and incidence rate ratio ("irr").}
+\item{calc}{The measure to be calculated. Choose from risk difference ("rd"), risk ratio ("rr"), incidence odds ratio ("ior"), incidence rate difference ("ird"), and incidence rate ratio ("irr"), or Mantel-Haenszel versions ("mhior", "mhrd", "mhrr").}
 
 \item{a}{The number of exposed cases. Alternatively, a 2x2 dataframe or matrix, in format data.frame(c(a, c), c(b, d)) or matrix(c(a, c, b, d)), of counts.}
 
@@ -31,4 +31,6 @@ Returns a tibble with a p-value, 95 percent CI, and estimated measure of associa
 }
 \details{
 Recommended use: pipe to View("Title") for easiest viewing.
+
+calc always returns the Wald method, including on Mantel-Haenszel measures.
 }

@@ -16,7 +16,6 @@
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb ORMH
 #' @importFrom tibble tibble
 #' @export
 mhior <- function(x,
@@ -43,25 +42,18 @@ mhior <- function(x,
 
   # generate a matrix for fmsb
   mhior.df <- ezepi:::matrix(
-    x.df,
-    index = TRUE,
-    risk = FALSE,
-    rate = FALSE
+    x.df
   )
 
   # calc odds ratio from table
-  sink(file = nullfile())
-  mhior.fmsb <- fmsb::ORMH(
-    mhior.df,
-    conf.level = conf_lvl
-  )
-  sink()
+  mhior.calc <- ezepi::calc("mhior", mhior.df$a, mhior.df$b, mhior.df$c, mhior.df$d)
 
   # pull numbers from fmsb for tibble
   mhior.res <- tibble::tibble(
-    "Odds Ratio" = as.numeric(mhior.fmsb$estimate),
-    "LCI" = as.numeric(mhior.fmsb$conf.int[1]),
-    "UCI" = as.numeric(mhior.fmsb$conf.int[2])
+    "or" = as.numeric(mhior.calc[1]),
+    "lci" = as.numeric(mhior.calc[2]),
+    "uci" = as.numeric(mhior.calc[3]),
+    "p" = as.numeric(mhior.calc[4])
   )
 
   return(mhior.res)

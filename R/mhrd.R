@@ -15,7 +15,6 @@
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb RDMH
 #' @importFrom tibble tibble
 #' @export
 mhrd <- function(x,
@@ -42,25 +41,18 @@ mhrd <- function(x,
 
   # generate a matrix for fmsb
   mhrd.df <- ezepi:::matrix(
-    x.df,
-    index = TRUE,
-    risk = TRUE,
-    rate = FALSE
+    x.df
   )
 
   # calc risk difference from table
-  sink(file = nullfile())
-  mhrd.fmsb <- fmsb::RDMH(
-    mhrd.df,
-    conf.level = conf_lvl
-  )
-  sink()
+  mhrd.calc <- ezepi::calc("mhrd", mhrd.df$a, mhrd.df$b, mhrd.df$c, mhrd.df$d)
 
   # pull numbers from fmsb for tibble
   mhrd.res <- tibble::tibble(
-    "Risk Difference" = as.numeric(mhrd.fmsb$estimate),
-    "LCI" = as.numeric(mhrd.fmsb$conf.int[1]),
-    "UCI" = as.numeric(mhrd.fmsb$conf.int[2])
+    "rd" = as.numeric(mhrd.calc[1]),
+    "lci" = as.numeric(mhrd.calc[2]),
+    "uci" = as.numeric(mhrd.calc[3]),
+    "p" = as.numeric(mhrd.calc[4])
   )
 
   return(mhrd.res)

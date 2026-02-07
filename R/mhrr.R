@@ -16,7 +16,6 @@
 #' @param conf_lvl The preferred confidence level for hypothesis testing. Defaults to 0.95.
 #' @return A tibble.
 #' @importFrom utils modifyList
-#' @importFrom fmsb RRMH
 #' @importFrom tibble tibble
 #' @export
 mhrr <- function(x,
@@ -43,25 +42,18 @@ mhrr <- function(x,
 
   # generate a matrix for fmsb
   mhrr.df <- ezepi:::matrix(
-    x.df,
-    index = TRUE,
-    risk = TRUE,
-    rate = FALSE
+    x.df
   )
 
   # calc risk ratio from table
-  sink(file = nullfile())
-  mhrr.fmsb <- fmsb::RRMH(
-    mhrr.df,
-    conf.level = conf_lvl
-  )
-  sink()
+  mhrr.calc <- ezepi::calc("mhrr", mhrr.df$a, mhrr.df$b, mhrr.df$c, mhrr.df$d)
 
   # pull numbers from fmsb for tibble
   mhrr.res <- tibble::tibble(
-    "Risk Ratio" = as.numeric(mhrr.fmsb$estimate),
-    "LCI" = as.numeric(mhrr.fmsb$conf.int[1]),
-    "UCI" = as.numeric(mhrr.fmsb$conf.int[2])
+    "rr" = as.numeric(mhrr.calc[1]),
+    "lci" = as.numeric(mhrr.calc[2]),
+    "uci" = as.numeric(mhrr.calc[3]),
+    "p" = as.numeric(mhrr.calc[4])
   )
 
   return(mhrr.res)
