@@ -1,5 +1,12 @@
 # ezepi Changelog
 
+## ezepi 2.5.1
+
+### Changed
+
+- Added Mantel-Haenszel functionality to calc
+- Removed fmsb function calls from mh functions, changing their dependency to calc
+
 ## ezepi 2.5.0
 
 ### Added

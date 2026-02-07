@@ -115,15 +115,15 @@ Like ez functions, mh functions compare a binary outcome across a binary
 exposed variable. However, it uses a third stratification variable to
 perform Mantel-Haenszel pooling. mh functions include:
 
-1.  **mhrd**: Generates a table with an estimate and CI for a
+1.  **mhrd**: Generates a table with an estimate and Wald CI for a
     Mantel-Haenszel risk difference.
-2.  **mhrr**: Generates a table with an estimate and CI for a
+2.  **mhrr**: Generates a table with an estimate and Wald CI for a
     Mantel-Haenszel risk ratio.
-3.  **mhior**: Generates a table with an estimate and CI for a
+3.  **mhior**: Generates a table with an estimate and Wald CI for a
     Mantel-Haenszel incidence odds ratio.
 
-For now, mh functions wrap the corresponding fmsb functions. In the
-future, they will depend on ezepi::calc.
+Before version 2.5.1, all mh functions were wrappers of corresponding
+fmsb functions. From v2.5.1 on, they depend on ezepi::calc.
 
 ### calc
 
@@ -172,8 +172,6 @@ This package is now in stable condition.
 
 ### Coming changes
 
-- Mantel-Haenszel support in calc and the full removal of fmsb
-  dependency.
 - Weighted estimation using ez and more functions.
 
 ## Legal
