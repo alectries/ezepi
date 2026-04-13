@@ -8,6 +8,8 @@
 #' @importFrom rlang warn
 #' @importFrom rlang inform
 #' @importFrom rlang caller_env
+#' @importFrom rlang new_quosure
+#' @importFrom rlang eval_tidy
 #' @importFrom cli style_bold
 #' @importFrom dplyr pull
 #' @importFrom magrittr `%>%`
@@ -40,15 +42,16 @@ startup <- function(args, list){
 
   # xdat
   if(xdat){
+
     # Does dataset exist? If yes, eval
     tryCatch(
       {
-        x <- if(as.character(list$x) == ".") {
-          get(".", envir = parent.frame(n=2))
-          } else {
-            get(as.character(list$x))
-            }
-        },
+        xquo <- rlang::new_quosure(
+          expr = list$x,
+          env = rlang::caller_env(2)
+        )
+        x <- rlang::eval_tidy(xquo)
+      },
       error = function(cond){rlang::abort(
         message = c(
           cli::style_bold("x does not exist!"),
