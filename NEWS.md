@@ -1,5 +1,11 @@
 # ezepi Changelog
 
+## ezepi 2.5.2
+
+### Changed
+
+- Modified startup evaluation to support native R piping, not just magrittr
+
 ## ezepi 2.5.1
 
 ### Changed
