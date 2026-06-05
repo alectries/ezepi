@@ -116,6 +116,9 @@ calc <- function(calc,
     n <- sum(calc.df$a, na.rm = T) + sum(calc.df$b, na.rm = T) +
       sum(calc.df$c, na.rm = T) + sum(calc.df$d, na.rm = T)
   }
+  if(is.na(n) && calc %in% c("ird", "irr")){
+    n <- sum(calc.df$control)
+  }
 
   # calculate design effect if sumdiff exists
   if(exists("sumdiff") && !(calc %in% c("mhior", "mhrd", "mhrr"))){
