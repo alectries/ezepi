@@ -1,5 +1,12 @@
 # ezepi Changelog
 
+## ezepi 2.5.3
+
+### Changed
+
+- Fixed duplicate printing in ezirr and ezird
+- Fixed flawed n calculation for rate associations
+
 ## ezepi 2.5.2
 
 ### Changed
