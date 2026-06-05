@@ -50,7 +50,6 @@ ezirr <- function(x,
     rate = TRUE,
     print = print
   )
-  print(ezirr.df)
 
   # calc rate ratio from table
   ezirr.calc <- ezepi::calc(

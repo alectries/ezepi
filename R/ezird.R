@@ -50,7 +50,6 @@ ezird <- function(x,
     rate = TRUE,
     print = print
   )
-  print(ezird.df)
 
   # calc rate diff from table
   ezird.calc <- ezepi::calc(
