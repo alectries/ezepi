@@ -12,8 +12,8 @@ measures from line-list data without wrangling it first.
 
 Run the following commands in your R console to install ezepi:
 
-    install.packages("devtools")
-    devtools::install_github("alectries/ezepi")
+    install.packages("remotes")
+    remotes::install_github("alectries/ezepi")
 
 You can update ezepi by running `devtools::update_packages()` and
 selecting the option for ezepi.
